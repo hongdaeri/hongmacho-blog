@@ -1,0 +1,23 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
+import HeroSection from '../components/hero/HeroSection.astro';
+import CategoriesSection from '../components/home/CategoriesSection.astro';
+import LatestPosts from '../components/home/LatestPosts.astro';
+import { getCollection } from 'astro:content';
+
+const allPosts = await getCollection('blog');
+const sortedPosts = allPosts.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+const latestPosts = sortedPosts.slice(0, 6);
+---
+
+<BaseLayout title="홍마초의 잡생각" description="개발, 투자, 학습 그리고 일상의 기록.">
+  <Header />
+  <main>
+    <HeroSection />
+    <CategoriesSection posts={allPosts} />
+    <LatestPosts posts={latestPosts} />
+  </main>
+  <Footer />
+</BaseLayout>

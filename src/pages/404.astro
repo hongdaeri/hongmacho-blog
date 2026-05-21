@@ -1,0 +1,72 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
+---
+
+<BaseLayout title="404 — 홍마초의 잡생각" description="페이지를 찾을 수 없습니다.">
+  <Header />
+  <main class="not-found-page">
+    <div class="container not-found-page__inner">
+      <div class="not-found__num" aria-hidden="true">404</div>
+      <h1 class="not-found__title">페이지를 찾을 수 없어요</h1>
+      <p class="not-found__desc">
+        요청하신 페이지가 존재하지 않거나 이동되었습니다.
+      </p>
+      <div class="not-found__actions">
+        <a href="/" class="btn btn--primary">홈으로 돌아가기</a>
+        <a href="/blog" class="btn btn--ghost">블로그 보기</a>
+      </div>
+    </div>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+.not-found-page {
+  padding: 80px 0 120px;
+  display: flex;
+  align-items: center;
+  min-height: 60vh;
+}
+
+.not-found-page__inner {
+  max-width: var(--content-width, 720px);
+  margin-inline: auto;
+  text-align: center;
+}
+
+.not-found__num {
+  font-size: clamp(96px, 12vw, 180px);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  background: linear-gradient(135deg, var(--c-blue-50) 0%, var(--c-violet-50) 60%, var(--cat-daily) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0 0 24px 0;
+}
+
+.not-found__title {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--color-label-strong);
+  margin: 0 0 12px 0;
+}
+
+.not-found__desc {
+  font-size: 16px;
+  color: var(--color-label-normal);
+  margin: 0 0 40px 0;
+  line-height: 1.6;
+}
+
+.not-found__actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+</style>

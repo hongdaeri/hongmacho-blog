@@ -1,0 +1,439 @@
+/* ──────────────────────────────────────────────────────────────────
+   Wanted Design System — color & type tokens
+   Source: extracted from the "Wanted Design System (Community)" Figma.
+   ──────────────────────────────────────────────────────────────────*/
+
+:root {
+  /* ───────────────────────────────────────────────────────────────
+     ATOMIC COLOR — raw palette (Figma: color-global-* / color-atomic-*)
+     Naming: --c-{role}-{stop}. Stop 100 = lightest, 0 = darkest
+     (Wanted's convention — opposite of Tailwind's).
+     ─────────────────────────────────────────────────────────────── */
+
+  /* Common */
+  --c-common-100: #ffffff;          /* color-atomic-common-100 */
+  --c-common-0:   #000000;          /* color-atomic-common-0   */
+
+  /* Neutral (true neutral) */
+  --c-neutral-99: #fcfcfc;
+  --c-neutral-95: #f2f2f2;
+  --c-neutral-90: #e6e6e6;
+  --c-neutral-80: #cccccc;
+  --c-neutral-70: #b3b3b3;
+  --c-neutral-60: #999999;
+  --c-neutral-50: #808080;
+  --c-neutral-40: #666666;
+  --c-neutral-30: #4d4d4d;
+  --c-neutral-22: #383838;
+  --c-neutral-20: #333333;
+  --c-neutral-15: #262626;
+  --c-neutral-10: #1a1a1a;
+  --c-neutral-5:  #0d0d0d;
+  --c-neutral-0:  #000000;
+
+  /* Cool Neutral (workhorse text / surface ramp) */
+  --c-cool-99: #fcfcfc;
+  --c-cool-98: #fafafa;
+  --c-cool-97: #f9f9fa;
+  --c-cool-96: #f8f8f9;
+  --c-cool-95: #f7f7f8;
+  --c-cool-90: #f4f4f5;
+  --c-cool-80: #eaebec;
+  --c-cool-70: #e1e2e4;
+  --c-cool-60: #dbdcdf;
+  --c-cool-50: #c2c4c8;
+  --c-cool-40: #aeb0b6;
+  --c-cool-30: #989ba2;
+  --c-cool-25: #878a93;
+  --c-cool-23: #70737c;             /* the most‑used neutral anchor */
+  --c-cool-22: #5a5c63;
+  --c-cool-20: #46474c;
+  --c-cool-17: #37383c;
+  --c-cool-15: #333438;
+  --c-cool-10: #2e2f33;
+  --c-cool-7:  #292a2d;
+  --c-cool-5:  #212225;
+  --c-cool-0:  #1b1c1e;
+
+  /* Blue (brand accent) */
+  --c-blue-99: #f7fbff;
+  --c-blue-95: #eaf2fe;
+  --c-blue-90: #c9defe;
+  --c-blue-80: #9ec5ff;
+  --c-blue-70: #69a5ff;
+  --c-blue-65: #4f95ff;
+  --c-blue-60: #3385ff;
+  --c-blue-55: #1a75ff;
+  --c-blue-50: #0066ff;             /* THE Wanted brand blue */
+  --c-blue-45: #005eeb;
+  --c-blue-40: #0054d1;
+  --c-blue-30: #003e9c;
+  --c-blue-20: #002966;
+  --c-blue-10: #001536;
+  --c-blue-0:  #000000;
+
+  /* Red (negative / danger) */
+  --c-red-99: #fffafa;
+  --c-red-95: #feecec;
+  --c-red-90: #fed5d5;
+  --c-red-80: #ffb5b5;
+  --c-red-70: #ff8c8c;
+  --c-red-60: #ff6363;
+  --c-red-50: #ff4242;              /* default red */
+  --c-red-40: #e52222;
+  --c-red-30: #b20c0c;
+  --c-red-20: #750404;
+  --c-red-10: #3b0101;
+  --c-red-0:  #000000;
+
+  /* Green (positive / success) */
+  --c-green-99: #f2fff6;
+  --c-green-95: #d9ffe6;
+  --c-green-90: #acfcc7;
+  --c-green-80: #7df5a5;
+  --c-green-70: #49e57d;
+  --c-green-60: #1ed45a;
+  --c-green-50: #00bf40;            /* default green */
+  --c-green-40: #009632;
+  --c-green-30: #006e25;
+  --c-green-20: #004517;
+  --c-green-10: #00240c;
+  --c-green-0:  #000000;
+
+  /* Orange */
+  --c-orange-99: #fffcf7;
+  --c-orange-95: #fef4e6;
+  --c-orange-90: #fee6c6;
+  --c-orange-80: #ffd49c;
+  --c-orange-70: #ffc06e;
+  --c-orange-60: #ffa938;
+  --c-orange-50: #ff9200;
+  --c-orange-40: #d47800;
+  --c-orange-30: #9c5800;
+  --c-orange-20: #663a00;
+  --c-orange-10: #361e00;
+  --c-orange-0:  #000000;
+
+  /* Red Orange */
+  --c-red-orange-99: #fffaf7;
+  --c-red-orange-95: #feeee5;
+  --c-red-orange-90: #fedbc6;
+  --c-red-orange-80: #ffc09c;
+  --c-red-orange-70: #ff9c63;
+  --c-red-orange-60: #ff7b2e;
+  --c-red-orange-50: #ff5e00;
+  --c-red-orange-40: #f55a00;
+  --c-red-orange-30: #cc4b00;
+  --c-red-orange-20: #943600;
+  --c-red-orange-10: #5c2200;
+  --c-red-orange-0:  #000000;
+
+  /* Lime */
+  --c-lime-99: #f8fff2;
+  --c-lime-95: #e6ffd4;
+  --c-lime-90: #ccfca9;
+  --c-lime-80: #aef779;
+  --c-lime-70: #88f03e;
+  --c-lime-60: #6be016;
+  --c-lime-50: #58cf04;
+  --c-lime-40: #48ad00;
+  --c-lime-30: #347d00;
+  --c-lime-20: #225200;
+  --c-lime-10: #112900;
+  --c-lime-0:  #000000;
+
+  /* Cyan */
+  --c-cyan-99: #f7feff;
+  --c-cyan-95: #defaff;
+  --c-cyan-90: #b5f4ff;
+  --c-cyan-80: #8aedff;
+  --c-cyan-70: #57dff7;
+  --c-cyan-60: #28d0ed;
+  --c-cyan-50: #00bdde;
+  --c-cyan-40: #0098b2;
+  --c-cyan-30: #006f82;
+  --c-cyan-20: #004854;
+  --c-cyan-10: #00252b;
+  --c-cyan-0:  #000000;
+
+  /* Light Blue */
+  --c-light-blue-99: #f7fdff;
+  --c-light-blue-95: #e5f6fe;
+  --c-light-blue-90: #c4ecfe;
+  --c-light-blue-80: #a1e1ff;
+  --c-light-blue-70: #70d2ff;
+  --c-light-blue-60: #3dc2ff;
+  --c-light-blue-50: #00aeff;
+  --c-light-blue-40: #008dcf;
+  --c-light-blue-30: #006796;
+  --c-light-blue-20: #004261;
+  --c-light-blue-10: #002130;
+  --c-light-blue-0:  #000000;
+
+  /* Violet */
+  --c-violet-99: #fbfaff;
+  --c-violet-95: #f0ecfe;
+  --c-violet-90: #dbd3fe;
+  --c-violet-80: #c0b0ff;
+  --c-violet-70: #9e86fc;
+  --c-violet-60: #7d5ef7;
+  --c-violet-50: #6541f2;
+  --c-violet-40: #5b37ed;
+  --c-violet-30: #4f29e5;
+  --c-violet-20: #3a16c9;
+  --c-violet-10: #23098f;
+  --c-violet-5:  #11024d;
+  --c-violet-0:  #000000;
+
+  /* Purple */
+  --c-purple-99: #fefbff;
+  --c-purple-95: #f9edff;
+  --c-purple-90: #f2d6ff;
+  --c-purple-80: #e9baff;
+  --c-purple-70: #de96ff;
+  --c-purple-60: #d478ff;
+  --c-purple-50: #cb59ff;
+  --c-purple-40: #ad36e3;
+  --c-purple-30: #861cb8;
+  --c-purple-20: #580a7d;
+  --c-purple-10: #290247;
+  --c-purple-0:  #000000;
+
+  /* Pink */
+  --c-pink-99: #fffafe;
+  --c-pink-95: #feecfb;
+  --c-pink-90: #fed3f7;
+  --c-pink-80: #ffb8f3;
+  --c-pink-70: #ff94ed;
+  --c-pink-60: #fa73e3;
+  --c-pink-50: #f553da;
+  --c-pink-40: #e846cd;
+  --c-pink-30: #d331b8;
+  --c-pink-20: #a81690;
+  --c-pink-10: #730560;
+  --c-pink-5:  #3d0133;
+  --c-pink-0:  #000000;
+
+  /* Opacity ramp (used for alpha overlays) */
+  --c-opacity-05: 0.05;
+  --c-opacity-08: 0.08;
+  --c-opacity-12: 0.12;
+  --c-opacity-16: 0.16;
+  --c-opacity-22: 0.22;
+  --c-opacity-28: 0.28;
+  --c-opacity-35: 0.35;
+  --c-opacity-43: 0.43;
+  --c-opacity-52: 0.52;
+  --c-opacity-61: 0.61;
+  --c-opacity-74: 0.74;
+  --c-opacity-88: 0.88;
+  --c-opacity-97: 0.97;
+  --c-opacity-100: 1;
+
+  /* ───────────────────────────────────────────────────────────────
+     SEMANTIC COLOR — Light theme aliases (the ones you should use)
+     ─────────────────────────────────────────────────────────────── */
+
+  /* Primary / brand */
+  --color-primary-normal:  var(--c-blue-50);
+  --color-primary-hover:   var(--c-blue-45);
+  --color-primary-pressed: var(--c-blue-40);
+  --color-primary-strong:  var(--c-blue-40);
+  --color-primary-heavy:   var(--c-blue-30);
+  --color-primary-on:      var(--c-common-100);
+
+  /* Label (text) */
+  --color-label-strong:    var(--c-common-0);     /* primary text   */
+  --color-label-normal:    rgba(23,23,25,0.88);   /* secondary text */
+  --color-label-neutral:   rgba(46,47,51,0.88);
+  --color-label-alternative: rgba(55,56,60,0.61); /* meta / hint    */
+  --color-label-assistive: rgba(55,56,60,0.28);   /* placeholder    */
+  --color-label-disable:   rgba(55,56,60,0.16);
+
+  /* Background */
+  --color-bg-normal:        var(--c-common-100);
+  --color-bg-alternative:   var(--c-cool-95);
+  --color-bg-elevated-normal: var(--c-common-100);
+  --color-bg-elevated-alternative: var(--c-cool-95);
+
+  /* Lines (borders & dividers) */
+  --color-line-normal:     rgba(112,115,124,0.22); /* hairline */
+  --color-line-neutral:    rgba(112,115,124,0.16);
+  --color-line-alternative: rgba(112,115,124,0.08);
+  --color-line-strong:     var(--c-cool-23);
+
+  /* Fills (button / chip backgrounds) */
+  --color-fill-normal:     rgba(112,115,124,0.08);
+  --color-fill-strong:     rgba(112,115,124,0.16);
+  --color-fill-heavy:      rgba(112,115,124,0.22);
+
+  /* Status */
+  --color-status-positive: var(--c-green-50);
+  --color-status-cautionary: var(--c-orange-50);
+  --color-status-negative: var(--c-red-50);
+  --color-status-informative: var(--c-blue-50);
+
+  /* Accent (variants for emphasis chips) */
+  --color-accent-violet:   var(--c-violet-50);
+  --color-accent-pink:     var(--c-pink-50);
+  --color-accent-cyan:     var(--c-cyan-50);
+
+  /* ───────────────────────────────────────────────────────────────
+     ELEVATION — shadow tokens
+     ─────────────────────────────────────────────────────────────── */
+  --shadow-emphasize: 0 0 1px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.08);
+  --shadow-normal:    0 0 1px rgba(23,23,23,0.07), 0 1px 4px rgba(23,23,23,0.06);
+  --shadow-strong:    0 1px 4px rgba(23,23,23,0.10), 0 4px 14px rgba(23,23,23,0.07);
+  --shadow-heavy:     0 4px 14px rgba(23,23,23,0.10), 0 14px 40px rgba(23,23,23,0.06);
+
+  /* ───────────────────────────────────────────────────────────────
+     SHAPE — radii
+     ─────────────────────────────────────────────────────────────── */
+  --radius-1:  4px;
+  --radius-2:  8px;
+  --radius-3:  12px;
+  --radius-4:  16px;
+  --radius-5:  20px;
+  --radius-6:  24px;
+  --radius-7:  32px;
+  --radius-8:  48px;
+  --radius-9:  60px;
+  --radius-10: 64px;
+  --radius-full: 9999px;
+
+  /* ───────────────────────────────────────────────────────────────
+     SPACING — 4px base
+     ─────────────────────────────────────────────────────────────── */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-7:  32px;
+  --space-8:  40px;
+  --space-9:  48px;
+  --space-10: 64px;
+  --space-11: 96px;
+  --space-12: 128px;
+
+  /* ───────────────────────────────────────────────────────────────
+     TYPOGRAPHY — family stacks
+     ─────────────────────────────────────────────────────────────── */
+  --font-sans:    "Pretendard JP", "Noto Sans KR", "Inter", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-display: "Wanted Sans Variable", "Wanted Sans", "Pretendard JP", "Inter", system-ui, sans-serif;
+  --font-mono:    "SF Mono", "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+
+  /* Type ramp — Display */
+  --t-display-1-size: 56px;  --t-display-1-line: 72px; --t-display-1-tracking: -0.0319em; --t-display-1-weight: 700;
+  --t-display-2-size: 40px;  --t-display-2-line: 52px; --t-display-2-tracking: -0.0282em; --t-display-2-weight: 700;
+  --t-display-3-size: 36px;  --t-display-3-line: 48px; --t-display-3-tracking: -0.027em;  --t-display-3-weight: 700;
+
+  /* Title */
+  --t-title-1-size: 32px;    --t-title-1-line: 44px;   --t-title-1-tracking: -0.0253em;  --t-title-1-weight: 700;
+  --t-title-2-size: 28px;    --t-title-2-line: 38px;   --t-title-2-tracking: -0.0236em;  --t-title-2-weight: 700;
+  --t-title-3-size: 24px;    --t-title-3-line: 32px;   --t-title-3-tracking: -0.023em;   --t-title-3-weight: 700;
+
+  /* Heading */
+  --t-heading-1-size: 22px;  --t-heading-1-line: 30px; --t-heading-1-tracking: -0.0194em;--t-heading-1-weight: 700;
+  --t-heading-2-size: 20px;  --t-heading-2-line: 28px; --t-heading-2-tracking: -0.012em; --t-heading-2-weight: 700;
+
+  /* Headline */
+  --t-headline-1-size: 18px; --t-headline-1-line: 26px;--t-headline-1-tracking: -0.002em;--t-headline-1-weight: 700;
+  --t-headline-2-size: 17px; --t-headline-2-line: 24px;--t-headline-2-tracking: 0em;     --t-headline-2-weight: 700;
+
+  /* Body */
+  --t-body-1-size: 16px;     --t-body-1-line: 24px;    --t-body-1-tracking: 0.0057em;    --t-body-1-weight: 500;
+  --t-body-1-reading-line: 26px;
+  --t-body-2-size: 15px;     --t-body-2-line: 22px;    --t-body-2-tracking: 0.0096em;    --t-body-2-weight: 500;
+  --t-body-2-reading-line: 24px;
+
+  /* Label */
+  --t-label-1-size: 14px;    --t-label-1-line: 20px;   --t-label-1-tracking: 0.0145em;   --t-label-1-weight: 600;
+  --t-label-1-reading-line: 22px;
+  --t-label-2-size: 13px;    --t-label-2-line: 18px;   --t-label-2-tracking: 0.0194em;   --t-label-2-weight: 600;
+
+  /* Caption */
+  --t-caption-1-size: 12px;  --t-caption-1-line: 16px; --t-caption-1-tracking: 0.0252em; --t-caption-1-weight: 600;
+  --t-caption-2-size: 11px;  --t-caption-2-line: 14px; --t-caption-2-tracking: 0.0311em; --t-caption-2-weight: 700;
+
+  /* ───────────────────────────────────────────────────────────────
+     MOTION
+     ─────────────────────────────────────────────────────────────── */
+  --motion-micro:        150ms;
+  --motion-standard:     200ms;
+  --motion-transitional: 300ms;
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   DARK THEME (light-on-dark) — swap the semantic aliases.
+   ───────────────────────────────────────────────────────────────── */
+[data-theme="dark"] {
+  --color-label-strong:    var(--c-common-100);
+  --color-label-normal:    rgba(255,255,255,0.88);
+  --color-label-neutral:   rgba(255,255,255,0.74);
+  --color-label-alternative: rgba(255,255,255,0.43);
+  --color-label-assistive: rgba(255,255,255,0.28);
+  --color-label-disable:   rgba(255,255,255,0.16);
+
+  --color-bg-normal:        #171719;
+  --color-bg-alternative:   #1b1c1e;
+  --color-bg-elevated-normal: #212225;
+  --color-bg-elevated-alternative: #1b1c1e;
+
+  --color-line-normal:     rgba(255,255,255,0.16);
+  --color-line-neutral:    rgba(255,255,255,0.10);
+  --color-line-alternative: rgba(255,255,255,0.06);
+  --color-line-strong:     rgba(255,255,255,0.40);
+
+  --color-fill-normal:     rgba(255,255,255,0.06);
+  --color-fill-strong:     rgba(255,255,255,0.12);
+  --color-fill-heavy:      rgba(255,255,255,0.22);
+
+  --color-primary-normal:  var(--c-blue-55);
+  --color-primary-hover:   var(--c-blue-60);
+  --color-primary-pressed: var(--c-blue-65);
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   SEMANTIC TYPE CLASSES — drop‑in helpers
+   ───────────────────────────────────────────────────────────────── */
+.wds-display-1 { font-family: var(--font-display); font-weight: var(--t-display-1-weight); font-size: var(--t-display-1-size); line-height: var(--t-display-1-line); letter-spacing: var(--t-display-1-tracking); }
+.wds-display-2 { font-family: var(--font-display); font-weight: var(--t-display-2-weight); font-size: var(--t-display-2-size); line-height: var(--t-display-2-line); letter-spacing: var(--t-display-2-tracking); }
+.wds-display-3 { font-family: var(--font-sans);    font-weight: var(--t-display-3-weight); font-size: var(--t-display-3-size); line-height: var(--t-display-3-line); letter-spacing: var(--t-display-3-tracking); }
+
+.wds-title-1   { font-family: var(--font-sans); font-weight: var(--t-title-1-weight); font-size: var(--t-title-1-size); line-height: var(--t-title-1-line); letter-spacing: var(--t-title-1-tracking); }
+.wds-title-2   { font-family: var(--font-sans); font-weight: var(--t-title-2-weight); font-size: var(--t-title-2-size); line-height: var(--t-title-2-line); letter-spacing: var(--t-title-2-tracking); }
+.wds-title-3   { font-family: var(--font-sans); font-weight: var(--t-title-3-weight); font-size: var(--t-title-3-size); line-height: var(--t-title-3-line); letter-spacing: var(--t-title-3-tracking); }
+
+.wds-heading-1 { font-family: var(--font-sans); font-weight: var(--t-heading-1-weight); font-size: var(--t-heading-1-size); line-height: var(--t-heading-1-line); letter-spacing: var(--t-heading-1-tracking); }
+.wds-heading-2 { font-family: var(--font-sans); font-weight: var(--t-heading-2-weight); font-size: var(--t-heading-2-size); line-height: var(--t-heading-2-line); letter-spacing: var(--t-heading-2-tracking); }
+
+.wds-headline-1 { font-family: var(--font-sans); font-weight: var(--t-headline-1-weight); font-size: var(--t-headline-1-size); line-height: var(--t-headline-1-line); letter-spacing: var(--t-headline-1-tracking); }
+.wds-headline-2 { font-family: var(--font-sans); font-weight: var(--t-headline-2-weight); font-size: var(--t-headline-2-size); line-height: var(--t-headline-2-line); letter-spacing: var(--t-headline-2-tracking); }
+
+.wds-body-1    { font-family: var(--font-sans); font-weight: var(--t-body-1-weight); font-size: var(--t-body-1-size); line-height: var(--t-body-1-line); letter-spacing: var(--t-body-1-tracking); }
+.wds-body-1-reading { font-family: var(--font-sans); font-weight: var(--t-body-1-weight); font-size: var(--t-body-1-size); line-height: var(--t-body-1-reading-line); letter-spacing: var(--t-body-1-tracking); }
+.wds-body-2    { font-family: var(--font-sans); font-weight: var(--t-body-2-weight); font-size: var(--t-body-2-size); line-height: var(--t-body-2-line); letter-spacing: var(--t-body-2-tracking); }
+.wds-body-2-reading { font-family: var(--font-sans); font-weight: var(--t-body-2-weight); font-size: var(--t-body-2-size); line-height: var(--t-body-2-reading-line); letter-spacing: var(--t-body-2-tracking); }
+
+.wds-label-1   { font-family: var(--font-sans); font-weight: var(--t-label-1-weight); font-size: var(--t-label-1-size); line-height: var(--t-label-1-line); letter-spacing: var(--t-label-1-tracking); }
+.wds-label-2   { font-family: var(--font-sans); font-weight: var(--t-label-2-weight); font-size: var(--t-label-2-size); line-height: var(--t-label-2-line); letter-spacing: var(--t-label-2-tracking); }
+
+.wds-caption-1 { font-family: var(--font-sans); font-weight: var(--t-caption-1-weight); font-size: var(--t-caption-1-size); line-height: var(--t-caption-1-line); letter-spacing: var(--t-caption-1-tracking); }
+.wds-caption-2 { font-family: var(--font-sans); font-weight: var(--t-caption-2-weight); font-size: var(--t-caption-2-size); line-height: var(--t-caption-2-line); letter-spacing: var(--t-caption-2-tracking); }
+
+/* Defaults — semantic element styling. Opt into these by adding the
+   "wds" class to a page root, or use the individual .wds-* helpers. */
+.wds, .wds * { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; }
+.wds          { font-family: var(--font-sans); color: var(--color-label-strong); background: var(--color-bg-normal); }
+.wds h1       { font-family: var(--font-sans); font-weight: 700; font-size: var(--t-title-1-size); line-height: var(--t-title-1-line); letter-spacing: var(--t-title-1-tracking); }
+.wds h2       { font-family: var(--font-sans); font-weight: 700; font-size: var(--t-title-2-size); line-height: var(--t-title-2-line); letter-spacing: var(--t-title-2-tracking); }
+.wds h3       { font-family: var(--font-sans); font-weight: 700; font-size: var(--t-title-3-size); line-height: var(--t-title-3-line); letter-spacing: var(--t-title-3-tracking); }
+.wds h4       { font-family: var(--font-sans); font-weight: 700; font-size: var(--t-heading-1-size); line-height: var(--t-heading-1-line); letter-spacing: var(--t-heading-1-tracking); }
+.wds h5       { font-family: var(--font-sans); font-weight: 700; font-size: var(--t-heading-2-size); line-height: var(--t-heading-2-line); letter-spacing: var(--t-heading-2-tracking); }
+.wds p        { font-family: var(--font-sans); font-weight: 500; font-size: var(--t-body-1-size); line-height: var(--t-body-1-line); letter-spacing: var(--t-body-1-tracking); color: var(--color-label-normal); }
+.wds small    { font-family: var(--font-sans); font-weight: 500; font-size: var(--t-label-2-size); line-height: var(--t-label-2-line); letter-spacing: var(--t-label-2-tracking); color: var(--color-label-alternative); }
+.wds code, .wds pre { font-family: var(--font-mono); font-size: 13px; }
+.wds a        { color: var(--color-primary-normal); text-underline-offset: 3px; text-decoration-thickness: 1.5px; }

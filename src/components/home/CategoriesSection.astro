@@ -1,0 +1,114 @@
+---
+import { CATEGORY_LIST } from '../../lib/categories';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  posts: CollectionEntry<'blog'>[];
+}
+
+const { posts } = Astro.props;
+
+const categoryCounts = CATEGORY_LIST.map((cat) => ({
+  ...cat,
+  count: posts.filter((p) => p.data.category === cat.id).length,
+}));
+---
+
+<section class="categories-section">
+  <div class="container categories-section__inner">
+    <h2 class="section-title">카테고리</h2>
+    <div class="cat-grid">
+      {categoryCounts.map((cat) => (
+        <a href={`/blog?cat=${cat.id}`} class="cat-card" style={`--cat-color: ${cat.color}`}>
+          <div class="cat-card__icon" aria-hidden="true">
+            <span class="cat-card__dot"></span>
+          </div>
+          <div class="cat-card__body">
+            <span class="cat-card__name">{cat.name}</span>
+            <span class="cat-card__count">{cat.count}편</span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+.categories-section {
+  background: var(--surface-2, rgba(0,0,0,0.025));
+  padding: 80px 0;
+}
+
+.categories-section__inner {
+  max-width: var(--content-width, 720px);
+  margin-inline: auto;
+}
+
+.section-title {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  margin-bottom: 28px;
+}
+
+.cat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+@container app (max-width: 900px) {
+  .cat-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@container app (max-width: 480px) {
+  .cat-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.cat-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 20px;
+  border-radius: 12px;
+  background: var(--surface-overlay, #fff);
+  border: 1px solid var(--border-subtle, rgba(0,0,0,0.08));
+  text-decoration: none;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.cat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+}
+
+.cat-card__dot {
+  display: block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--cat-color, #0066ff);
+}
+
+.cat-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.cat-card__name {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.cat-card__count {
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+</style>

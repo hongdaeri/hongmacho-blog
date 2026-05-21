@@ -1,0 +1,539 @@
+{
+  "tasks": [
+    {
+      "id": "fe612d6f-00c8-4081-a9ff-aad5b4374f2e",
+      "name": "TASK-01: 프로젝트 스캐폴딩",
+      "description": "Astro 6.3.6 + TailwindCSS 4.3.0 + TypeScript 6.0.3 + React 19 프로젝트 수동 초기화. 현재 디렉토리(/Users/hongpaul/develop/project-persnol/hongmacho-blog)에 package.json 직접 작성 후 npm install.",
+      "status": "completed",
+      "dependencies": [],
+      "createdAt": "2026-05-21T17:08:33.822Z",
+      "updatedAt": "2026-05-21T17:13:30.550Z",
+      "relatedFiles": [
+        {
+          "path": "package.json",
+          "type": "CREATE",
+          "description": "프로젝트 의존성"
+        },
+        {
+          "path": "astro.config.mjs",
+          "type": "CREATE",
+          "description": "Astro 설정"
+        },
+        {
+          "path": "tsconfig.json",
+          "type": "CREATE",
+          "description": "TypeScript 설정"
+        },
+        {
+          "path": "tailwind.config.mjs",
+          "type": "CREATE",
+          "description": "Tailwind 설정"
+        },
+        {
+          "path": "src/pages/index.astro",
+          "type": "CREATE",
+          "description": "기본 홈 페이지"
+        }
+      ],
+      "implementationGuide": "1. package.json 작성: astro@6.3.6, @astrojs/tailwind, tailwindcss@4.3.0, @tailwindcss/typography@0.5.19, @tailwindcss/vite, lucide-react@1.16.0, @astrojs/react, react@19, react-dom@19, typescript@6.0.3\n2. astro.config.mjs: import react, tailwind; export default defineConfig({ integrations: [react(), tailwind()] })\n3. tsconfig.json: compilerOptions strict:true, paths {'@/*': ['./src/*']}\n4. tailwind.config.mjs: plugins [typography()]\n5. src/pages/index.astro: 기본 플레이스홀더\n6. npm install 실행\n7. npm run dev로 localhost:4321 확인",
+      "verificationCriteria": "npm run dev 실행 후 localhost:4321 접근 가능. TypeScript 오류 없음. TailwindCSS 클래스 적용됨.",
+      "analysisResult": "홍마초의 잡생각 Astro 블로그 전체 구현. 경로: /Users/hongpaul/develop/project-persnol/hongmacho-blog. CSS 규칙: @container app 필수, @media width 금지, app.css 클래스 그대로 사용. TypeScript strict mode, any 금지. localStorage keys 고정(blog-theme, blog-content-width, blog-recent-searches). 디자인 소스: ui_design_prd/design_reference/styles/app.css 최종 권위.",
+      "summary": "프로젝트 스캐폴딩 완료: package.json(astro@6.3.7, @astrojs/react, tailwindcss@4.x, @tailwindcss/vite, lucide-react, react@19), astro.config.mjs(Vite 플러그인 방식 Tailwind), tsconfig.json(strict+paths), tailwind.config.mjs, src/pages/index.astro, src/env.d.ts 생성. npm install 334 패키지 설치 완료, astro build 성공(1 page built in 3.06s). @astrojs/tailwind는 Astro 6 비호환으로 @tailwindcss/vite로 교체.",
+      "completedAt": "2026-05-21T17:13:30.547Z"
+    },
+    {
+      "id": "d64dd3df-1d02-4534-891c-8bab9ba5a6ea",
+      "name": "TASK-02: 디자인 토큰 이식",
+      "description": "ui_design_prd/design_reference/styles/의 wds-tokens.css, app.css를 src/styles/로 복사. global.css와 prose.css 생성.",
+      "status": "completed",
+      "dependencies": [
+        {
+          "taskId": "fe612d6f-00c8-4081-a9ff-aad5b4374f2e"
+        }
+      ],
+      "createdAt": "2026-05-21T17:08:33.822Z",
+      "updatedAt": "2026-05-21T17:19:05.782Z",
+      "relatedFiles": [
+        {
+          "path": "src/styles/tokens.css",
+          "type": "CREATE",
+          "description": "WDS 토큰"
+        },
+        {
+          "path": "src/styles/app.css",
+          "type": "CREATE",
+          "description": "앱 스타일"
+        },
+        {
+          "path": "src/styles/global.css",
+          "type": "CREATE",
+          "description": "글로벌 스타일"
+        },
+        {
+          "path": "src/styles/prose.css",
+          "type": "CREATE",
+          "description": "Typography 오버라이드"
+        },
+        {
+          "path": "ui_design_prd/design_reference/styles/wds-tokens.css",
+          "type": "REFERENCE",
+          "description": "원본 토큰"
+        },
+        {
+          "path": "ui_design_prd/design_reference/styles/app.css",
+          "type": "REFERENCE",
+          "description": "원본 앱 CSS"
+        }
+      ],
+      "implementationGuide": "1. src/styles/tokens.css ← wds-tokens.css 전체 복사(수정 없이)\n2. src/styles/app.css ← app.css 전체 복사(수정 없이)\n3. src/styles/global.css 생성: @import './tokens.css'; @import './app.css'; @tailwind base; @tailwind components; @tailwind utilities;\n4. src/styles/prose.css 생성: prose 오버라이드 (body 16px/1.75, h2 26px+scroll-margin-top 88px, h3 20px, blockquote 4px brand-blue left border, code JetBrains Mono 13.5px)\n5. BaseLayout.astro(아직 없음)에서 global.css import 예정",
+      "verificationCriteria": "CSS 변수 --c-blue-50, --color-bg-normal, --space-6, --radius-3 선언 확인. .app-shell container-name:app 확인. [data-theme=dark] 분기 확인.",
+      "analysisResult": "홍마초의 잡생각 Astro 블로그 전체 구현. 경로: /Users/hongpaul/develop/project-persnol/hongmacho-blog. CSS 규칙: @container app 필수, @media width 금지, app.css 클래스 그대로 사용. TypeScript strict mode, any 금지. localStorage keys 고정(blog-theme, blog-content-width, blog-recent-searches). 디자인 소스: ui_design_prd/design_reference/styles/app.css 최종 권위.",
+      "summary": "tokens.css(WDS 컬러/타이포/간격 토큰), app.css(2598줄, container queries, 카테고리 변수, 다크 테마), global.css(@import 체이닝), prose.css(body 16px/1.75, h2 26px+scroll-margin-top 88px, h3 20px, blockquote 4px brand-blue left border, code JetBrains Mono 13.5px, 다크 테마 오버라이드) 모두 생성 완료. Astro 6 빌드 통과 확인.",
+      "completedAt": "2026-05-21T17:19:05.780Z"
+    },
+    {
+      "id": "2f849ddd-24b5-4e54-8620-937899322355",
+      "name": "TASK-03: BaseLayout 구현",
+      "description": "모든 페이지의 HTML 골격 레이아웃. FOUC 방지 인라인 스크립트, 폰트 CDN, app-shell 래핑.",
+      "status": "completed",
+      "dependencies": [
+        {
+          "taskId": "d64dd3df-1d02-4534-891c-8bab9ba5a6ea"
+        }
+      ],
+      "createdAt": "2026-05-21T17:08:33.822Z",
+      "updatedAt": "2026-05-21T17:20:26.536Z",
+      "relatedFiles": [
+        {
+          "path": "src/layouts/BaseLayout.astro",
+          "type": "CREATE",
+          "description": "기본 레이아웃"
+        },
+        {
+          "path": "src/styles/global.css",
+          "type": "DEPENDENCY",
+          "description": "글로벌 스타일"
+        }
+      ],
+      "implementationGuide": "src/layouts/BaseLayout.astro 생성:\n1. Props: title, description, ogImage?\n2. <html lang=ko data-theme> — 인라인 블로킹 script: localStorage.getItem('blog-theme') || prefers-color-scheme으로 data-theme 설정. --content-width 복원.\n3. <head>: Pretendard CDN(orioncactus), JetBrains Mono Google Fonts, global.css import\n4. <body><div class=app-shell><slot /></div></body>",
+      "verificationCriteria": "다크/라이트 전환 후 새로고침 시 테마 유지. FOUC 없음. Pretendard 폰트 렌더됨.",
+      "analysisResult": "홍마초의 잡생각 Astro 블로그 전체 구현. 경로: /Users/hongpaul/develop/project-persnol/hongmacho-blog. CSS 규칙: @container app 필수, @media width 금지, app.css 클래스 그대로 사용. TypeScript strict mode, any 금지. localStorage keys 고정(blog-theme, blog-content-width, blog-recent-searches). 디자인 소스: ui_design_prd/design_reference/styles/app.css 최종 권위.",
+      "summary": "BaseLayout.astro 생성: FOUC 방지 인라인 블로킹 스크립트(blog-theme + prefers-color-scheme + --content-width 복원), Pretendard CDN(orioncactus), JetBrains Mono(Google Fonts), global.css import, app-shell 래핑. Astro 빌드 통과.",
+      "completedAt": "2026-05-21T17:20:26.535Z"
+    },
+    {
+      "id": "895d3405-7098-43df-b6cb-bf60be17d539",
+      "name": "TASK-04: Atom 컴포넌트 구현",
+      "description": "재사용 최소 단위 UI 컴포넌트 4종. CategoryBadge, Tag, Button, categories.ts.",
+      "status": "completed",
+      "dependencies": [
+        {
+          "taskId": "d64dd3df-1d02-4534-891c-8bab9ba5a6ea"
+        }
+      ],
+      "createdAt": "2026-05-21T17:08:33.822Z",
+      "updatedAt": "2026-05-21T17:20:29.300Z",
+      "relatedFiles": [
+        {
+          "path": "src/lib/categories.ts",
+          "type": "CREATE",
+          "description": "카테고리 상수"
+        },
+        {
+          "path": "src/components/ui/CategoryBadge.astro",
+          "type": "CREATE",
+          "description": "카테고리 배지"
+        },
+        {
+          "path": "src/components/ui/Tag.astro",
+          "type": "CREATE",
+          "description": "태그 컴포넌트"
+        },
+        {
+          "path": "src/components/ui/Button.astro",
+          "type": "CREATE",
+          "description": "버튼 컴포넌트"
+        },
+        {
+          "path": "ui_design_prd/design_reference/styles/app.css",
+          "type": "REFERENCE",
+          "description": "cat-badge, tag, btn 클래스"
+        }
+      ],
+      "implementationGuide": "1. src/lib/categories.ts: CATEGORIES 상수(dev/invest/learn/daily + name/color/cssVar), CategoryId 타입\n2. src/components/ui/CategoryBadge.astro: Props {category: CategoryId}, class=cat-badge cat-badge--{category}, 한국어 변환\n3. src/components/ui/Tag.astro: Props {tag, href?}, class=tag\n4. src/components/ui/Button.astro: Props {variant: primary|white|ghost, href?, type?}, class=btn btn--{variant}",
+      "verificationCriteria": "CategoryBadge 4종 카테고리 색상 렌더. Tag href 이동. Button 3 variant 스타일 일치.",
+      "analysisResult": "홍마초의 잡생각 Astro 블로그 전체 구현. 경로: /Users/hongpaul/develop/project-persnol/hongmacho-blog. CSS 규칙: @container app 필수, @media width 금지, app.css 클래스 그대로 사용. TypeScript strict mode, any 금지. localStorage keys 고정(blog-theme, blog-content-width, blog-recent-searches). 디자인 소스: ui_design_prd/design_reference/styles/app.css 최종 권위.",
+      "summary": "categories.ts(CATEGORIES 상수+CategoryId 타입), CategoryBadge.astro(cat-badge cat-badge--{category}), Tag.astro(href 유무 분기), Button.astro(primary/white/ghost variant, a/button 분기) 모두 구현. 빌드 통과.",
+      "completedAt": "2026-05-21T17:20:29.298Z"
+    },
+    {
+      "id": "c01ff30b-63d3-4a87-83ea-af9a396306a2",
+      "name": "TASK-05: Header 컴포넌트 구현",
+      "description": "sticky frosted glass 헤더. 스크롤 8px 시 hairline border. ≤720px 햄버거 메뉴. ThemeToggle, WidthPicker Island.",
+      "status": "completed",
+      "dependencies": [
+        {
+          "taskId": "2f849ddd-24b5-4e54-8620-937899322355"
+        },
+        {
+          "taskId": "895d3405-7098-43df-b6cb-bf60be17d539"
+        }
+      ],
+      "createdAt": "2026-05-21T17:08:33.822Z",
+      "updatedAt": "2026-05-21T17:21:59.795Z",
+      "relatedFiles": [
+        {
+          "path": "src/components/layout/Header.astro",
+          "type": "CREATE",
+          "description": "헤더"
+        },
+        {
+          "path": "src/components/layout/MobileMenu.astro",
+          "type": "CREATE",
+          "description": "모바일 메뉴"
+        },
+        {
+          "path": "src/components/ui/ThemeToggle.tsx",
+          "type": "CREATE",
+          "description": "테마 토글"
+        },
+        {
+          "path": "src/components/ui/WidthPicker.tsx",
+          "type": "CREATE",
+          "description": "너비 선택기"
+        },
+        {
+          "path": "ui_design_prd/design_reference/src/components.jsx",
+          "type": "REFERENCE",
+          "description": "Header 구현 참고"
+        }
+      ],
+      "implementationGuide": "1. src/components/layout/Header.astro: .site-header(sticky, backdrop-filter blur 24px, z-50). .site-header__inner height 68px. 브랜드 배지(32px, border-radius 9px, blue→violet gradient). nav 홈/블로그/소개. 툴 클러스터: 검색버튼+WidthPicker+ThemeToggle. scroll 이벤트 → scrolled 클래스(8px). @container app (max-width:720px) nav 숨김.\n2. src/components/layout/MobileMenu.astro: ≤720px 햄버거.\n3. src/components/ui/ThemeToggle.tsx (client:load): Sun/Moon 아이콘, localStorage blog-theme, 호버 -18deg 회전.\n4. src/components/ui/WidthPicker.tsx (client:load): 3-bar glyph, 220px popover, 600/720/860px radio, --content-width + localStorage blog-content-width.",
+      "verificationCriteria": "스크롤 시 hairline. 테마 전환 즉시 반영. WidthPicker 너비 변경. ≤720px 햄버거만 표시.",
+      "analysisResult": "홍마초의 잡생각 Astro 블로그 전체 구현. 경로: /Users/hongpaul/develop/project-persnol/hongmacho-blog. CSS 규칙: @container app 필수, @media width 금지, app.css 클래스 그대로 사용. TypeScript strict mode, any 금지. localStorage keys 고정(blog-theme, blog-content-width, blog-recent-searches). 디자인 소스: ui_design_prd/design_reference/styles/app.css 최종 권위.",
+      "summary": "Header.astro(sticky, scroll→scrolled 클래스, brand+nav+tools), ThemeToggle.tsx(Sun/Moon, localStorage blog-theme, data-theme 동기화), WidthPicker.tsx(3 옵션 220px popover, --content-width 변수), MobileMenu.astro(hamburger, aria-expanded) 구현. Astro 빌드 통과.",
+      "completedAt": "2026-05-21T17:21:59.793Z"
+    },
+    {
+      "id": "32aeb47f-6f71-4aa8-93ea-46154e78dbd7",
+      "name": "TASK-06: Footer 컴포넌트 구현",
+      "description": "3칸 그리드 푸터(1.4fr/1fr/1fr). 빌드 날짜 자동 주입. ≤768px 1칸.",
+      "status": "completed",
+      "dependencies": [
+        {
+          "taskId": "2f849ddd-24b5-4e54-8620-937899322355"
+        },
+        {
+          "taskId": "895d3405-7098-43df-b6cb-bf60be17d539"
+        }
+      ],
+      "createdAt": "2026-05-21T17:08:33.822Z",
+      "updatedAt": "2026-05-21T17:22:02.905Z",
+      "relatedFiles": [
+        {
+          "path": "src/components/layout/Footer.astro",
+          "type": "CREATE",
+          "description": "푸터"
+        },
+        {
+          "path": "ui_design_prd/design_reference/src/components.jsx",
+          "type": "REFERENCE",
+          "description": "Footer 구현 참고"
+        }
+      ],
+      "implementationGuide": "src/components/layout/Footer.astro:\n1. .site-footer border-top hairline, padding 48px 0 56px\n2. 3-col grid(1.4fr 1fr 1fr). @container app (max-width:768px) 1col\n3. 브랜드 블록: 배지+워드마크+태그라인+GitHub/X/RSS 소셜 아이콘(lucide-react)\n4. EXPLORE: 전체 글 + dev/invest/learn/daily 링크\n5. MORE: About / 구독 링크\n6. bottom row: © 2026 홍마초 + 빌드날짜 + v1.0.0 mono pill\n7. 빌드날짜: new Date().toLocaleDateString('ko-KR', {...})",
+      "verificationCriteria": "3칸 레이아웃. ≤768px 1칸 전환. 소셜 아이콘 호버 색상 변화.",
+      "analysisResult": "홍마초의 잡생각 Astro 블로그 전체 구현. 경로: /Users/hongpaul/develop/project-persnol/hongmacho-blog. CSS 규칙: @container app 필수, @media width 금지, app.css 클래스 그대로 사용. TypeScript strict mode, any 금지. localStorage keys 고정(blog-theme, blog-content-width, blog-recent-searches). 디자인 소스: ui_design_prd/design_reference/styles/app.css 최종 권위.",
+      "summary": "Footer.astro 구현: 3칸 그리드(brand-block/Explore/More), 빌드날짜 자동 주입(toLocaleDateString ko-KR), GitHub/X/RSS 소셜 아이콘, CATEGORY_LIST 동적 링크, v1.0.0 mono pill. Astro 빌드 통과.",
+      "completedAt": "2026-05-21T17:22:02.898Z"
+    },
+    {
+      "id": "67a2bfba-9a31-4bc8-b059-3beb41cc946d",
+      "name": "TASK-07: Content Collection 설정 + 샘플 포스트",
+      "description": "Astro Content Collections zod 스키마 정의. 샘플 포스트 5개(H2/H3/코드블록/blockquote/표 포함).",
+      "status": "completed",
+      "dependencies": [
+        {
+          "taskId": "fe612d6f-00c8-4081-a9ff-aad5b4374f2e"
+        }
+      ],
+      "createdAt": "2026-05-21T17:08:33.822Z",
+      "updatedAt": "2026-05-21T17:19:07.894Z",
+      "relatedFiles": [
+        {
+          "path": "src/content/config.ts",
+          "type": "CREATE",
+          "description": "Content Collection 스키마"
+        },
+        {
+          "path": "src/content/blog/2026-05-21-astro-blog-journey.md",
+          "type": "CREATE",
+          "description": "샘플 포스트 1"
+        },
+        {
+          "path": "src/content/blog/2026-05-22-quant-trading.md",
+          "type": "CREATE",
+          "description": "샘플 포스트 2"
+        },
+        {
+          "path": "src/content/blog/2026-05-23-spring-boot-optimization.md",
+          "type": "CREATE",
+          "description": "샘플 포스트 3"
+        },
+        {
+          "path": "src/content/blog/2026-05-24-java-streams.md",
+          "type": "CREATE",
+          "description": "샘플 포스트 4"
+        },
+        {
+          "path": "src/content/blog/2026-05-25-quitting-career.md",
+          "type": "CREATE",
+          "description": "샘플 포스트 5"
+        }
+      ],
+      "implementationGuide": "1. src/content/config.ts: defineCollection({ type:'content', schema: z.object({ title:z.string(), date:z.string().regex(/^\\d{4}-\\d{2}-\\d{2}$/), category:z.enum(['dev','invest','learn','daily']), excerpt:z.string().max(140), featured:z.boolean().optional().default(false), tags:z.array(z.string()).min(1), readTime:z.number().optional() }) })\n2. 샘플 포스트:\n- 2026-05-21-astro-blog-journey.md (dev, featured:true, 800자+)\n- 2026-05-22-quant-trading.md (invest, 600자+)\n- 2026-05-23-spring-boot-optimization.md (dev, 700자+)\n- 2026-05-24-java-streams.md (dev, 600자+)\n- 2026-05-25-quitting-career.md (daily, 500자+)\n각 포스트에 H2/H3/코드블록(언어 명시)/blockquote/표 1개 이상 포함",
+      "verificationCriteria": "getCollection('blog') 5개 반환. TypeScript 타입 추론 정상. zod 스키마 검증 통과.",
+      "analysisResult": "홍마초의 잡생각 Astro 블로그 전체 구현. 경로: /Users/hongpaul/develop/project-persnol/hongmacho-blog. CSS 규칙: @container app 필수, @media width 금지, app.css 클래스 그대로 사용. TypeScript strict mode, any 금지. localStorage keys 고정(blog-theme, blog-content-width, blog-recent-searches). 디자인 소스: ui_design_prd/design_reference/styles/app.css 최종 권위.",
+      "summary": "src/content.config.ts(Astro 6 glob loader + zod 스키마) 생성, 샘플 포스트 5개(dev×3, invest×1, daily×1) 생성 완료. 각 포스트에 H2/H3/코드블록/blockquote/표 포함. featured:true 포스트 1개. Astro 6 빌드에서 content synced 확인.",
+      "completedAt": "2026-05-21T17:19:07.889Z"
+    },
+    {
+      "id": "dae2c7bc-c648-4ed4-ae9a-ca27d5e1d9f3",
+      "name": "TASK-08: 유틸리티 라이브러리 구현",
+      "description": "공통 유틸리티: readTime, formatDate, slugify, 스코어 기반 searchPosts.",
+      "status": "completed",
+      "dependencies": [
+        {
+          "taskId": "67a2bfba-9a31-4bc8-b059-3beb41cc946d"
+        }
+      ],
+      "createdAt": "2026-05-21T17:08:33.822Z",
+      "updatedAt": "2026-05-21T17:20:33.152Z",
+      "relatedFiles": [
+        {
+          "path": "src/lib/readTime.ts",
+          "type": "CREATE",
+          "description": "읽기 시간 계산"
+        },
+        {
+          "path": "src/lib/utils.ts",
+          "type": "CREATE",
+          "description": "공통 유틸리티"
+        },
+        {
+          "path": "src/lib/search.ts",
+          "type": "CREATE",
+          "description": "스코어 검색"
+        }
+      ],
+      "implementationGuide": "1. src/lib/readTime.ts: calcReadTime(content: string): number = Math.max(1, Math.ceil(content.split(/\\s+/).length / 200))\n2. src/lib/utils.ts: formatDate(dateStr:string) toLocaleDateString ko-KR. slugify(str:string) lowercase+trim+replace spaces with dashes.\n3. src/lib/search.ts: BlogPost 타입, ScoredPost 타입. searchPosts(posts, query): title contains +10, title prefix +5, excerpt +4, tags +6, category +3. score>0 필터 후 내림차순 정렬.",
+      "verificationCriteria": "calcReadTime 200단어 → 1분. searchPosts 스코어 계산 정확성. TypeScript 타입 오류 없음.",
+      "analysisResult": "홍마초의 잡생각 Astro 블로그 전체 구현. 경로: /Users/hongpaul/develop/project-persnol/hongmacho-blog. CSS 규칙: @container app 필수, @media width 금지, app.css 클래스 그대로 사용. TypeScript strict mode, any 금지. localStorage keys 고정(blog-theme, blog-content-width, blog-recent-searches). 디자인 소스: ui_design_prd/design_reference/styles/app.css 최종 권위.",
+      "summary": "readTime.ts(Math.ceil(words/200), min 1), utils.ts(formatDate ko-KR, slugify), search.ts(BlogPost/ScoredPost 타입, 스코어 기반 title+10/titlePrefix+5/excerpt+4/tags+6/category+3 필터링 후 내림차순 정렬) 구현 완료. TypeScript strict 준수.",
+      "completedAt": "2026-05-21T17:20:33.152Z"
+    },
+    {
+      "id": "546015ed-97f4-41eb-8cbc-7c3f3aa0dfb9",
+      "name": "TASK-09: 홈 페이지 구현",
+      "description": "Hero(aurora 정적)+CategoriesSection+LatestPosts 3개. PostCard 컴포넌트.",
+      "status": "completed",
+      "dependencies": [
+        {
+          "taskId": "c01ff30b-63d3-4a87-83ea-af9a396306a2"
+        },
+        {
+          "taskId": "32aeb47f-6f71-4aa8-93ea-46154e78dbd7"
+        },
+        {
+          "taskId": "67a2bfba-9a31-4bc8-b059-3beb41cc946d"
+        },
+        {
+          "taskId": "dae2c7bc-c648-4ed4-ae9a-ca27d5e1d9f3"
+        }
+      ],
+      "createdAt": "2026-05-21T17:09:20.940Z",
+      "updatedAt": "2026-05-21T17:30:41.661Z",
+      "relatedFiles": [
+        {
+          "path": "src/pages/index.astro",
+          "type": "CREATE",
+          "description": "홈 페이지"
+        },
+        {
+          "path": "src/components/hero/HeroSection.astro",
+          "type": "CREATE",
+          "description": "Hero 섹션"
+        },
+        {
+          "path": "src/components/home/CategoriesSection.astro",
+          "type": "CREATE",
+          "description": "카테고리 섹션"
+        },
+        {
+          "path": "src/components/home/LatestPosts.astro",
+          "type": "CREATE",
+          "description": "최신 글"
+        },
+        {
+          "path": "src/components/blog/PostCard.astro",
+          "type": "CREATE",
+          "description": "포스트 카드"
+        },
+        {
+          "path": "ui_design_prd/design_reference/styles/app.css",
+          "type": "REFERENCE",
+          "description": "hero, cat-grid 클래스"
+        }
+      ],
+      "implementationGuide": "1. src/pages/index.astro: BaseLayout 감싸기, HeroSection+CategoriesSection+LatestPosts 조합\n2. src/components/hero/HeroSection.astro: .hero padding 128px 0 104px. greeting pill+pulsing dot. h1 hero__title. accent 클래스. CTA row btn--white+btn--ghost. hero--aurora 클래스 배경.\n3. src/components/home/CategoriesSection.astro: alt bg+hairline. .cat-grid 4col→2col @900→1col @480. 각 카드 count getCollection('blog')로 계산.\n4. src/components/home/LatestPosts.astro: date 정렬 최신 3개. .post-grid 3col→2col @960→1col @640. featured span 2.\n5. src/components/blog/PostCard.astro: CategoryBadge+title 2줄 clamp+excerpt 3줄 clamp+meta(date·readTime)+tags(max 3). 호버 translateY(-2px)+shadow-strong.",
+      "verificationCriteria": "홈 페이지 3섹션 렌더. 카테고리 카드 count 정확. PostCard 호버 동작. @container app 반응형.",
+      "analysisResult": "Phase 0 MVP 나머지 태스크: 홈/블로그목록/아티클/About+404 페이지. CSS @container app 필수. app.css 클래스 사용.",
+      "summary": "TASK-09 (홈 페이지 구현): 완료. HeroSection, CategoriesSection, LatestPosts 3개 섹션과 PostCard 컴포넌트 구현. 빌드 성공, 모든 9페이지 정적 생성.",
+      "completedAt": "2026-05-21T17:30:41.660Z"
+    },
+    {
+      "id": "8e574851-fece-4625-ae57-bb922cf9390f",
+      "name": "TASK-10: Blog List 페이지 구현",
+      "description": "2-칸 레이아웃(사이드바 220px+목록). URL searchParams 기반 카테고리/태그 필터. replaceState.",
+      "status": "completed",
+      "dependencies": [
+        {
+          "taskId": "c01ff30b-63d3-4a87-83ea-af9a396306a2"
+        },
+        {
+          "taskId": "32aeb47f-6f71-4aa8-93ea-46154e78dbd7"
+        },
+        {
+          "taskId": "67a2bfba-9a31-4bc8-b059-3beb41cc946d"
+        },
+        {
+          "taskId": "dae2c7bc-c648-4ed4-ae9a-ca27d5e1d9f3"
+        }
+      ],
+      "createdAt": "2026-05-21T17:09:20.940Z",
+      "updatedAt": "2026-05-21T17:30:45.182Z",
+      "relatedFiles": [
+        {
+          "path": "src/pages/blog/index.astro",
+          "type": "CREATE",
+          "description": "블로그 목록"
+        },
+        {
+          "path": "src/components/blog/Sidebar.astro",
+          "type": "CREATE",
+          "description": "사이드바"
+        },
+        {
+          "path": "src/components/blog/ListItem.astro",
+          "type": "CREATE",
+          "description": "목록 아이템"
+        },
+        {
+          "path": "src/components/blog/TagCloud.astro",
+          "type": "CREATE",
+          "description": "태그 클라우드"
+        }
+      ],
+      "implementationGuide": "1. src/pages/blog/index.astro: BaseLayout 감싸기. Astro.url.searchParams로 cat/tag 읽기. getCollection('blog') 전체 로드 후 JSON serialize → script에 전달.\n2. src/components/blog/Sidebar.astro: sticky top 88px. 카테고리 버튼(color dot+이름+count badge, 활성 fill-strong bg). TagCloud 포함.\n3. src/components/blog/ListItem.astro: hairline border-bottom. meta row(CategoryBadge+date+readTime). h3 22px 호버→primary. excerpt 15px. tags.\n4. src/components/blog/TagCloud.astro: frequency 정렬 Tag 컴포넌트.\n5. 클라이언트 script: URL cat/tag 파라미터 감지 → 필터링 → replaceState. blog-layout grid 220px 1fr → 1col @900.",
+      "verificationCriteria": "?cat=dev → dev 포스트만. ?tag=spring-boot → 해당 태그만. 뒤로가기 정상. ≤900px 사이드바 상단.",
+      "analysisResult": "Phase 0 MVP 나머지 태스크: 홈/블로그목록/아티클/About+404 페이지. CSS @container app 필수. app.css 클래스 사용.",
+      "summary": "TASK-10 (Blog List 페이지 구현): 완료. 2칼럼 레이아웃(사이드바 220px+목록), URL searchParams 기반 카테고리/태그 필터, replaceState 구현. 빌드 성공.",
+      "completedAt": "2026-05-21T17:30:45.181Z"
+    },
+    {
+      "id": "c508d7b3-44b7-4a35-878e-1202508e1cf7",
+      "name": "TASK-11: Article 페이지 구현",
+      "description": "TOC(220px)+본문 2-칸. Prose 스타일. ArticleHeader/Footer. TOC 스크롤 스파이 Island.",
+      "status": "completed",
+      "dependencies": [
+        {
+          "taskId": "c01ff30b-63d3-4a87-83ea-af9a396306a2"
+        },
+        {
+          "taskId": "32aeb47f-6f71-4aa8-93ea-46154e78dbd7"
+        },
+        {
+          "taskId": "67a2bfba-9a31-4bc8-b059-3beb41cc946d"
+        },
+        {
+          "taskId": "dae2c7bc-c648-4ed4-ae9a-ca27d5e1d9f3"
+        }
+      ],
+      "createdAt": "2026-05-21T17:09:20.940Z",
+      "updatedAt": "2026-05-21T17:30:54.886Z",
+      "relatedFiles": [
+        {
+          "path": "src/layouts/ArticleLayout.astro",
+          "type": "CREATE",
+          "description": "아티클 레이아웃"
+        },
+        {
+          "path": "src/pages/blog/[slug].astro",
+          "type": "CREATE",
+          "description": "아티클 페이지"
+        },
+        {
+          "path": "src/components/article/ArticleHeader.astro",
+          "type": "CREATE",
+          "description": "아티클 헤더"
+        },
+        {
+          "path": "src/components/article/ArticleFooter.astro",
+          "type": "CREATE",
+          "description": "아티클 푸터"
+        },
+        {
+          "path": "src/components/article/TOC.tsx",
+          "type": "CREATE",
+          "description": "목차 Island"
+        },
+        {
+          "path": "src/styles/prose.css",
+          "type": "DEPENDENCY",
+          "description": "Prose 스타일"
+        }
+      ],
+      "implementationGuide": "1. src/layouts/ArticleLayout.astro: BaseLayout 감싸기. .article-layout grid 220px 1fr → 1col @960.\n2. src/pages/blog/[slug].astro: getStaticPaths로 getCollection('blog'). h2/h3 추출 → TOC props. render() → Content.\n3. src/components/article/ArticleHeader.astro: CategoryBadge+date+readTime+h1 clamp(28px,4vw,40px)+excerpt 17px. byline(36px gradient avatar).\n4. src/components/article/ArticleFooter.astro: tag row + 링크복사/공유 버튼 + 관련글 2열(같은 카테고리) + Giscus placeholder div.\n5. src/components/article/TOC.tsx (client:load): headings props. scroll spy(scroll event, 120px offset). 활성 is-active→brand-blue+2px left indicator. sticky top 88px, max-height calc(100vh-110px).",
+      "verificationCriteria": "prose h2/h3/blockquote/code/table 스타일 일치. TOC 스크롤 시 활성 추적. ≤960px TOC 숨김.",
+      "analysisResult": "Phase 0 MVP 나머지 태스크: 홈/블로그목록/아티클/About+404 페이지. CSS @container app 필수. app.css 클래스 사용.",
+      "summary": "TASK-11 (Article 페이지 구현): 완료. 2칼럼 레이아웃(TOC 220px+본문), Prose 스타일 적용, ArticleHeader/Footer 구성요소, IntersectionObserver 기반 TOC 스크롤 스파이 Island 구현. 빌드 성공.",
+      "completedAt": "2026-05-21T17:30:54.886Z"
+    },
+    {
+      "id": "b49a046a-17ea-4195-82d0-fb7cccd4b42f",
+      "name": "TASK-12: About + 404 페이지 구현",
+      "description": "소개 페이지(gradient avatar, stat-grid)와 Not Found 페이지(gradient 404 텍스트).",
+      "status": "completed",
+      "dependencies": [
+        {
+          "taskId": "c01ff30b-63d3-4a87-83ea-af9a396306a2"
+        },
+        {
+          "taskId": "32aeb47f-6f71-4aa8-93ea-46154e78dbd7"
+        },
+        {
+          "taskId": "895d3405-7098-43df-b6cb-bf60be17d539"
+        }
+      ],
+      "createdAt": "2026-05-21T17:09:20.940Z",
+      "updatedAt": "2026-05-21T17:30:58.700Z",
+      "relatedFiles": [
+        {
+          "path": "src/pages/about.astro",
+          "type": "CREATE",
+          "description": "소개 페이지"
+        },
+        {
+          "path": "src/pages/404.astro",
+          "type": "CREATE",
+          "description": "404 페이지"
+        }
+      ],
+      "implementationGuide": "1. src/pages/about.astro: BaseLayout 감싸기. max-width 720px margin auto padding 64px 24px. 80px gradient circular avatar(blue→violet, '홍'). h1 28px + role caption. .stat-grid 3칸(글 수/백엔드 경력/올해 책) → 1칸 @540. 주제/관심사/연락처 bullet. CTA primary+ghost.\n2. src/pages/404.astro: BaseLayout 감싸기. full-height centered flex. '404' gradient text clamp(96px,12vw,180px). h1 title-1 + p body-1 alt. CTA primary '홈으로' + ghost '블로그 보기'.",
+      "verificationCriteria": "About stat grid @540 반응형. 404 gradient 텍스트 렌더. design_reference 일치.",
+      "analysisResult": "Phase 0 MVP 나머지 태스크: 홈/블로그목록/아티클/About+404 페이지. CSS @container app 필수. app.css 클래스 사용.",
+      "summary": "TASK-12 (About + 404 페이지 구현): 완료. About 페이지: gradient avatar, 소개 텍스트, stat-grid (4칼럼 통계). 404 페이지: gradient 404 텍스트, 안내 메시지, 홈 링크. 빌드 성공, 모든 페이지 정적 생성.",
+      "completedAt": "2026-05-21T17:30:58.699Z"
+    }
+  ]
+}

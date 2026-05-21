@@ -1,0 +1,69 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
+import type { CollectionEntry } from 'astro:content';
+
+interface TocItem {
+  depth: number;
+  text: string;
+  slug: string;
+}
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+  toc: TocItem[];
+}
+
+const { post, toc } = Astro.props;
+const { title, description, excerpt, category } = { ...post.data, description: post.data.excerpt };
+---
+
+<BaseLayout title={`${title} | 홍마초의 잡생각`} description={excerpt}>
+  <Header />
+  <main class="article-page">
+    <div class="container article-page__inner">
+      <div class="article-content">
+        <slot />
+      </div>
+      {toc.length > 0 && (
+        <aside class="article-toc">
+          <div class="toc-sticky">
+            <slot name="toc" />
+          </div>
+        </aside>
+      )}
+    </div>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+.article-page {
+  padding: 48px 0 80px;
+}
+
+.article-page__inner {
+  display: grid;
+  grid-template-columns: 1fr 220px;
+  gap: 48px;
+  align-items: start;
+  max-width: calc(var(--content-width, 720px) + 280px);
+  margin-inline: auto;
+}
+
+@container app (max-width: 960px) {
+  .article-page__inner {
+    grid-template-columns: 1fr;
+  }
+
+  .article-toc {
+    display: none;
+  }
+}
+
+.toc-sticky {
+  position: sticky;
+  top: 88px;
+}
+</style>

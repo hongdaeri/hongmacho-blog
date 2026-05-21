@@ -1,0 +1,88 @@
+---
+import PostCard from '../blog/PostCard.astro';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  posts: CollectionEntry<'blog'>[];
+}
+
+const { posts } = Astro.props;
+---
+
+<section class="latest-posts">
+  <div class="container latest-posts__inner">
+    <div class="latest-posts__header">
+      <h2 class="section-title">최근 글</h2>
+      <a href="/blog" class="latest-posts__more">전체 보기 →</a>
+    </div>
+    <div class="posts-grid">
+      {posts.map((post) => (
+        <PostCard post={post} featured={post.data.featured} />
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+.latest-posts {
+  padding: 80px 0;
+}
+
+.latest-posts__inner {
+  max-width: var(--content-width, 720px);
+  margin-inline: auto;
+}
+
+.latest-posts__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28px;
+}
+
+.section-title {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.latest-posts__more {
+  font-size: 14px;
+  color: var(--c-blue-50, #0066ff);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.latest-posts__more:hover {
+  text-decoration: underline;
+}
+
+.posts-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+@container app (max-width: 960px) {
+  .posts-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@container app (max-width: 640px) {
+  .posts-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.posts-grid :global(.post-card--featured) {
+  grid-column: span 2;
+}
+
+@container app (max-width: 640px) {
+  .posts-grid :global(.post-card--featured) {
+    grid-column: span 1;
+  }
+}
+</style>

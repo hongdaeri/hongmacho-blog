@@ -1,0 +1,115 @@
+---
+import type { CategoryId } from '../../lib/categories';
+
+interface CategoryWithCount {
+  id: string;
+  name: string;
+  color: string;
+  count: number;
+}
+
+interface Props {
+  categories: CategoryWithCount[];
+  selectedCat: CategoryId | null;
+}
+
+const { categories, selectedCat } = Astro.props;
+---
+
+<nav class="sidebar-categories">
+  <div class="sidebar__title">카테고리</div>
+  <ul class="sidebar__list">
+    <li>
+      <a
+        href="/blog"
+        class:list={['sidebar__link', { 'is-active': !selectedCat }]}
+      >
+        <span class="sidebar__dot" style="background: var(--text-tertiary)"></span>
+        <span class="sidebar__label">전체</span>
+        <span class="sidebar__badge">{categories.reduce((s, c) => s + c.count, 0)}</span>
+      </a>
+    </li>
+    {categories.map((cat) => (
+      <li>
+        <a
+          href={`/blog?cat=${cat.id}`}
+          class:list={['sidebar__link', { 'is-active': selectedCat === cat.id }]}
+        >
+          <span class="sidebar__dot" style={`background: ${cat.color}`}></span>
+          <span class="sidebar__label">{cat.name}</span>
+          <span class="sidebar__badge">{cat.count}</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+</nav>
+
+<style>
+.sidebar-categories {
+  position: sticky;
+  top: 88px;
+}
+
+.sidebar__title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-tertiary);
+  margin-bottom: 10px;
+  padding: 0 8px;
+}
+
+.sidebar__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sidebar__link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background 0.1s;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.sidebar__link:hover {
+  background: var(--surface-2, rgba(0,0,0,0.04));
+  color: var(--text-primary);
+}
+
+.sidebar__link.is-active {
+  background: var(--c-blue-10, rgba(0, 102, 255, 0.08));
+  color: var(--c-blue-50, #0066ff);
+  font-weight: 600;
+}
+
+.sidebar__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.sidebar__label {
+  flex: 1;
+}
+
+.sidebar__badge {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 1px 7px;
+  border-radius: 99px;
+  background: var(--surface-2, rgba(0,0,0,0.06));
+  color: var(--text-tertiary);
+  font-family: monospace;
+}
+</style>

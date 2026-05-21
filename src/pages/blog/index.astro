@@ -1,0 +1,161 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/layout/Header.astro';
+import Footer from '../../components/layout/Footer.astro';
+import Sidebar from '../../components/blog/Sidebar.astro';
+import ListItem from '../../components/blog/ListItem.astro';
+import TagCloud from '../../components/blog/TagCloud.astro';
+import { getCollection } from 'astro:content';
+import { CATEGORY_LIST } from '../../lib/categories';
+import type { CategoryId } from '../../lib/categories';
+
+const allPosts = await getCollection('blog');
+const sortedPosts = allPosts.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
+
+const url = Astro.url;
+const selectedCat = url.searchParams.get('cat') as CategoryId | null;
+const selectedTag = url.searchParams.get('tag');
+
+const filteredPosts = sortedPosts.filter((post) => {
+  if (selectedCat && post.data.category !== selectedCat) return false;
+  if (selectedTag && !post.data.tags.includes(selectedTag)) return false;
+  return true;
+});
+
+const allTags = [...new Set(allPosts.flatMap((p) => p.data.tags))];
+const tagCounts = allTags.map((tag) => ({
+  tag,
+  count: allPosts.filter((p) => p.data.tags.includes(tag)).length,
+})).sort((a, b) => b.count - a.count);
+
+const categoryCounts = CATEGORY_LIST.map((cat) => ({
+  ...cat,
+  count: allPosts.filter((p) => p.data.category === cat.id).length,
+}));
+
+const pageTitle = selectedCat
+  ? `${CATEGORY_LIST.find(c => c.id === selectedCat)?.name ?? ''} 글 목록`
+  : selectedTag
+  ? `#${selectedTag} 태그 목록`
+  : '블로그';
+---
+
+<BaseLayout title={`${pageTitle} | 홍마초의 잡생각`}>
+  <Header />
+  <main class="blog-list-page">
+    <div class="container blog-list-page__inner">
+      <aside class="blog-sidebar">
+        <Sidebar
+          categories={categoryCounts}
+          selectedCat={selectedCat}
+        />
+        <TagCloud tags={tagCounts} selectedTag={selectedTag} />
+      </aside>
+      <section class="blog-list">
+        <div class="blog-list__header">
+          <h1 class="blog-list__title">{pageTitle}</h1>
+          <span class="blog-list__count">{filteredPosts.length}편</span>
+        </div>
+        {filteredPosts.length > 0 ? (
+          <ul class="blog-list__items">
+            {filteredPosts.map((post) => (
+              <li>
+                <ListItem post={post} />
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <div class="blog-list__empty">
+            <p>글이 없습니다.</p>
+            <a href="/blog" class="btn btn--ghost">전체 보기</a>
+          </div>
+        )}
+      </section>
+    </div>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+.blog-list-page {
+  min-height: 60vh;
+  padding: 60px 0 80px;
+}
+
+.blog-list-page__inner {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 48px;
+  align-items: start;
+  max-width: calc(var(--content-width, 720px) + 280px);
+  margin-inline: auto;
+}
+
+@container app (max-width: 860px) {
+  .blog-list-page__inner {
+    grid-template-columns: 1fr;
+  }
+
+  .blog-sidebar {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+}
+
+.blog-list__header {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 8px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border-subtle, rgba(0,0,0,0.08));
+}
+
+.blog-list__title {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.blog-list__count {
+  font-size: 14px;
+  color: var(--text-tertiary);
+}
+
+.blog-list__items {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.blog-list__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 60px 0;
+  color: var(--text-secondary);
+  text-align: center;
+}
+</style>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const cat = params.get('cat');
+  const tag = params.get('tag');
+
+  const newParams = new URLSearchParams();
+  if (cat) newParams.set('cat', cat);
+  if (tag) newParams.set('tag', tag);
+
+  const newSearch = newParams.toString();
+  const newUrl = newSearch
+    ? `${window.location.pathname}?${newSearch}`
+    : window.location.pathname;
+
+  if (window.location.href !== new URL(newUrl, window.location.origin).href) {
+    window.history.replaceState({}, '', newUrl);
+  }
+</script>

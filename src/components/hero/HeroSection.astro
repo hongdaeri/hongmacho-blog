@@ -1,0 +1,97 @@
+---
+---
+
+<section class="hero hero--aurora">
+  <div class="container hero__inner">
+    <div class="hero__greeting-pill">
+      <span class="hero__greeting-dot" aria-hidden="true"></span>
+      새로운 생각이 매일 자랍니다
+    </div>
+    <h1 class="hero__title">
+      개발, 투자, 학습<br />그리고 일상의 기록
+    </h1>
+    <p class="hero__sub">
+      소프트웨어 엔지니어 홍마초의 솔직한 생각과 경험을 공유합니다.
+    </p>
+    <div class="hero__cta-row">
+      <a href="/blog" class="btn btn--primary">블로그 시작하기</a>
+      <a href="/about" class="btn btn--ghost">소개 보기</a>
+    </div>
+  </div>
+</section>
+
+<style>
+.hero {
+  padding: 128px 0 104px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero--aurora::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 60% -10%, rgba(0, 102, 255, 0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at -10% 80%, rgba(101, 65, 242, 0.10) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.hero__inner {
+  position: relative;
+  z-index: 1;
+  max-width: var(--content-width, 720px);
+  margin-inline: auto;
+}
+
+.hero__greeting-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 99px;
+  background: var(--surface-2, rgba(0, 102, 255, 0.06));
+  border: 1px solid var(--border-subtle, rgba(0, 102, 255, 0.15));
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--c-blue-50, #0066ff);
+  margin-bottom: 28px;
+}
+
+.hero__greeting-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--c-blue-50, #0066ff);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+.hero__title {
+  font-size: clamp(36px, 6vw, 64px);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+  margin-bottom: 20px;
+}
+
+.hero__sub {
+  font-size: 18px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  max-width: 480px;
+  margin-bottom: 40px;
+}
+
+.hero__cta-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+</style>

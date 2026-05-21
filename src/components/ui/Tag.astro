@@ -1,0 +1,18 @@
+---
+interface Props {
+  tag: string;
+  href?: string;
+}
+
+const { tag, href } = Astro.props;
+---
+
+{
+  href ? (
+    <a href={href} class="tag">
+      #{tag}
+    </a>
+  ) : (
+    <span class="tag">#{tag}</span>
+  )
+}

@@ -1,0 +1,257 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
+---
+
+<BaseLayout title="소개 | 홍마초의 잡생각" description="안녕하세요, 소프트웨어 엔지니어 홍마초입니다.">
+  <Header />
+  <main class="about-page">
+    <div class="container about-page__inner">
+      <div class="about-hero">
+        <div class="about-avatar" aria-hidden="true">홍</div>
+        <div class="about-hero__text">
+          <h1 class="about-hero__name">홍마초</h1>
+          <p class="about-hero__role">Software Engineer</p>
+          <p class="about-hero__bio">
+            개발, 투자, 학습 그리고 일상을 기록하는 소프트웨어 엔지니어입니다.
+            좋은 코드와 좋은 삶을 함께 추구합니다.
+          </p>
+          <div class="about-hero__links">
+            <a href="https://github.com/hongmacho" target="_blank" rel="noopener noreferrer" class="about-hero__link">
+              GitHub
+            </a>
+            <a href="https://x.com/hongmacho" target="_blank" rel="noopener noreferrer" class="about-hero__link">
+              X / Twitter
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-card__value">5+</div>
+          <div class="stat-card__label">년 개발 경력</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card__value">∞</div>
+          <div class="stat-card__label">커피 잔 수</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card__value">4</div>
+          <div class="stat-card__label">블로그 카테고리</div>
+        </div>
+      </div>
+
+      <section class="about-section">
+        <h2 class="about-section__title">무엇을 기록하나요?</h2>
+        <div class="about-categories">
+          <div class="about-cat-item">
+            <span class="about-cat-dot" style="background: var(--cat-dev);"></span>
+            <div>
+              <strong>개발</strong>
+              <p>프로그래밍, 아키텍처, 개발 도구에 대한 인사이트</p>
+            </div>
+          </div>
+          <div class="about-cat-item">
+            <span class="about-cat-dot" style="background: var(--cat-invest);"></span>
+            <div>
+              <strong>투자</strong>
+              <p>주식, 퀀트 트레이딩, 금융 공부 기록</p>
+            </div>
+          </div>
+          <div class="about-cat-item">
+            <span class="about-cat-dot" style="background: var(--cat-learn);"></span>
+            <div>
+              <strong>학습</strong>
+              <p>책 리뷰, 강의 후기, 새로운 기술 학습 정리</p>
+            </div>
+          </div>
+          <div class="about-cat-item">
+            <span class="about-cat-dot" style="background: var(--cat-daily);"></span>
+            <div>
+              <strong>일상</strong>
+              <p>생각, 경험, 삶에 대한 솔직한 이야기</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="about-cta">
+        <a href="/blog" class="btn btn--primary">블로그 글 읽기</a>
+        <a href="/rss.xml" class="btn btn--ghost">RSS 구독</a>
+      </div>
+    </div>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+.about-page {
+  padding: 80px 0;
+}
+
+.about-page__inner {
+  max-width: var(--content-width, 720px);
+  margin-inline: auto;
+}
+
+.about-hero {
+  display: flex;
+  align-items: flex-start;
+  gap: 32px;
+  margin-bottom: 60px;
+  flex-wrap: wrap;
+}
+
+.about-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--c-blue-50) 0%, var(--c-violet-50) 100%);
+  color: var(--c-common-100);
+  font-size: 32px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.about-hero__text {
+  flex: 1;
+  min-width: 200px;
+}
+
+.about-hero__name {
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--color-label-strong);
+  margin: 0 0 4px 0;
+}
+
+.about-hero__role {
+  font-size: 14px;
+  color: var(--color-primary-normal);
+  font-weight: 600;
+  margin: 0 0 12px 0;
+}
+
+.about-hero__bio {
+  font-size: 16px;
+  color: var(--color-label-normal);
+  line-height: 1.7;
+  max-width: 480px;
+  margin: 0 0 20px 0;
+}
+
+.about-hero__links {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.about-hero__link {
+  font-size: 14px;
+  color: var(--color-label-normal);
+  text-decoration: none;
+  padding: 6px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--color-line-normal);
+  transition: border-color var(--motion-micro) var(--ease-standard), color var(--motion-micro) var(--ease-standard);
+}
+
+.about-hero__link:hover {
+  border-color: var(--color-primary-normal);
+  color: var(--color-primary-normal);
+}
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 60px;
+}
+
+@container app (max-width: 540px) {
+  .stat-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.stat-card {
+  padding: 28px 24px;
+  border-radius: 12px;
+  background: var(--color-bg-alternative);
+  border: 1px solid var(--color-line-normal);
+  text-align: center;
+}
+
+.stat-card__value {
+  font-size: 36px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--color-label-strong);
+  margin: 0 0 6px 0;
+}
+
+.stat-card__label {
+  font-size: 13px;
+  color: var(--color-label-alternative);
+  margin: 0;
+}
+
+.about-section {
+  margin-bottom: 48px;
+}
+
+.about-section__title {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--color-label-strong);
+  margin: 0 0 20px 0;
+}
+
+.about-categories {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.about-cat-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.about-cat-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 5px;
+}
+
+.about-cat-item strong {
+  display: block;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-label-strong);
+  margin-bottom: 2px;
+}
+
+.about-cat-item p {
+  font-size: 14px;
+  color: var(--color-label-normal);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.about-cta {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+</style>

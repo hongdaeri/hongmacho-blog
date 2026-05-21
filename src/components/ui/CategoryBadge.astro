@@ -1,0 +1,15 @@
+---
+import { CATEGORIES, type CategoryId } from '../../lib/categories';
+
+interface Props {
+  category: CategoryId;
+  class?: string;
+}
+
+const { category, class: className } = Astro.props;
+const cat = CATEGORIES[category];
+---
+
+<span class:list={['cat-badge', `cat-badge--${category}`, className]}>
+  {cat.name}
+</span>
