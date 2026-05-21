@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>구현 완료 보고서 — 홍마초의 잡생각</title>
+<style>
+  :root {
+    --blue: #0066FF;
+    --violet: #6541F2;
+    --green: #10B981;
+    --amber: #F59E0B;
+    --red: #EF4444;
+    --teal: #14B8A6;
+    --bg: #ffffff;
+    --bg-alt: #F7F7F8;
+    --text: rgba(23,23,25,0.88);
+    --text-alt: rgba(55,56,60,0.61);
+    --line: rgba(112,115,124,0.22);
+    --shadow: 0 1px 4px rgba(23,23,23,0.10), 0 4px 14px rgba(23,23,23,0.07);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Pretendard Variable", "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    background: var(--bg-alt);
+    color: var(--text);
+    line-height: 1.6;
+    padding: 40px 16px 80px;
+  }
+  .container { max-width: 900px; margin: 0 auto; }
+  /* Header */
+  .report-header {
+    background: linear-gradient(135deg, var(--blue) 0%, var(--violet) 100%);
+    border-radius: 20px;
+    padding: 48px 40px;
+    color: #fff;
+    margin-bottom: 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  .report-header::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+  .report-header h1 { font-size: 32px; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 8px; }
+  .report-header .meta { font-size: 14px; opacity: 0.75; }
+  .report-header .badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.2);
+    border-radius: 100px;
+    padding: 4px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    margin-top: 16px;
+  }
+  /* Summary cards */
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .summary-card {
+    background: var(--bg);
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: var(--shadow);
+    text-align: center;
+  }
+  .summary-card .number { font-size: 36px; font-weight: 800; letter-spacing: -0.04em; }
+  .summary-card .label { font-size: 13px; color: var(--text-alt); margin-top: 4px; }
+  .summary-card.green .number { color: var(--green); }
+  .summary-card.blue .number { color: var(--blue); }
+  .summary-card.amber .number { color: var(--amber); }
+  .summary-card.violet .number { color: var(--violet); }
+  /* Section */
+  .section {
+    background: var(--bg);
+    border-radius: 16px;
+    padding: 28px 32px;
+    box-shadow: var(--shadow);
+    margin-bottom: 20px;
+  }
+  .section h2 {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section h2 .icon { font-size: 20px; }
+  /* Task list */
+  .task-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .task-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 16px;
+    border-radius: 10px;
+    background: var(--bg-alt);
+    font-size: 14px;
+  }
+  .task-item.done { background: #F0FDF4; }
+  .task-item.skip { background: #FFFBEB; }
+  .task-item.partial { background: #EFF6FF; }
+  .task-status {
+    flex-shrink: 0;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px;
+    margin-top: 1px;
+  }
+  .task-status.done { background: var(--green); color: #fff; }
+  .task-status.skip { background: var(--amber); color: #fff; }
+  .task-status.partial { background: var(--blue); color: #fff; }
+  .task-info { flex: 1; }
+  .task-title { font-weight: 600; color: var(--text); }
+  .task-desc { font-size: 13px; color: var(--text-alt); margin-top: 3px; }
+  .task-id {
+    flex-shrink: 0;
+    font-size: 11px;
+    font-weight: 700;
+    font-family: monospace;
+    color: var(--text-alt);
+    background: var(--line);
+    padding: 2px 8px;
+    border-radius: 6px;
+  }
+  /* PRD checklist */
+  .checklist { display: flex; flex-direction: column; gap: 6px; }
+  .check-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .check-item:last-child { border-bottom: none; }
+  .check-icon { flex-shrink: 0; font-size: 16px; }
+  .check-text { flex: 1; }
+  .check-note { font-size: 12px; color: var(--text-alt); margin-top: 2px; }
+  /* Tech stack */
+  .tech-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tech-pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--bg-alt);
+    border: 1px solid var(--line);
+    border-radius: 100px;
+    padding: 6px 14px;
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .tech-pill .dot { width: 8px; height: 8px; border-radius: 50%; }
+  /* File tree */
+  .file-tree {
+    background: #1E1E2E;
+    border-radius: 12px;
+    padding: 20px 24px;
+    font-family: "JetBrains Mono", "SF Mono", monospace;
+    font-size: 12.5px;
+    line-height: 1.8;
+    color: #CDD6F4;
+    overflow-x: auto;
+  }
+  .file-tree .dir { color: #89DCEB; }
+  .file-tree .file { color: #A6E3A1; }
+  .file-tree .comment { color: #6C7086; }
+  /* Status banner */
+  .banner {
+    border-radius: 12px;
+    padding: 16px 20px;
+    font-size: 14px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .banner.info { background: #EFF6FF; border-left: 4px solid var(--blue); }
+  .banner.warn { background: #FFFBEB; border-left: 4px solid var(--amber); }
+  .banner.success { background: #F0FDF4; border-left: 4px solid var(--green); }
+  .banner .banner-icon { font-size: 18px; flex-shrink: 0; }
+  .banner strong { font-weight: 700; }
+  /* Phase header */
+  .phase-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+    margin-top: 4px;
+  }
+  .phase-badge {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 100px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .phase-badge.mvp { background: #DCFCE7; color: #15803D; }
+  .phase-badge.p1  { background: #DBEAFE; color: #1D4ED8; }
+  .phase-badge.p2  { background: #F3E8FF; color: #7E22CE; }
+  /* Footer */
+  .report-footer {
+    text-align: center;
+    color: var(--text-alt);
+    font-size: 13px;
+    margin-top: 40px;
+  }
+  @media (max-width: 640px) {
+    .summary-grid { grid-template-columns: repeat(2, 1fr); }
+    .section { padding: 20px; }
+    .report-header { padding: 32px 24px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Report Header -->
+  <div class="report-header">
+    <h1>🚀 홍마초의 잡생각 — 구현 완료 보고서</h1>
+    <div class="meta">생성일: 2026년 5월 22일 &nbsp;·&nbsp; 브랜치: main &nbsp;·&nbsp; 커밋: 131f63f</div>
+    <div class="badge">✅ 전체 20개 태스크 완료 (사용자 개입 필요 2개 제외)</div>
+  </div>
+
+  <!-- Summary Cards -->
+  <div class="summary-grid">
+    <div class="summary-card green">
+      <div class="number">18</div>
+      <div class="label">자동 완료 태스크</div>
+    </div>
+    <div class="summary-card amber">
+      <div class="number">2</div>
+      <div class="label">사용자 개입 필요</div>
+    </div>
+    <div class="summary-card blue">
+      <div class="number">10</div>
+      <div class="label">생성된 페이지</div>
+    </div>
+    <div class="summary-card violet">
+      <div class="number">5</div>
+      <div class="label">git 커밋</div>
+    </div>
+  </div>
+
+  <!-- Banners -->
+  <div class="banner success">
+    <span class="banner-icon">✅</span>
+    <div><strong>빌드 성공:</strong> <code>npm run build</code> 완료 — 0 errors, 10 pages, dist/ 생성됨. sitemap.xml, robots.txt, feed.xml 모두 포함.</div>
+  </div>
+  <div class="banner warn">
+    <span class="banner-icon">⚠️</span>
+    <div><strong>사용자 개입 필요:</strong> GitHub 레포 연결 + Vercel 배포, Giscus 계정 설정은 실제 외부 서비스이므로 자동 진행이 불가합니다. 아래 <em>사용자 액션 필요</em> 섹션 참조.</div>
+  </div>
+
+  <!-- Task Completion by Phase -->
+  <div class="section">
+    <h2><span class="icon">📋</span> 태스크 완료 현황 (전체 20개)</h2>
+
+    <div class="phase-header"><span class="phase-badge mvp">Phase 0 — MVP</span></div>
+    <ul class="task-list" style="margin-bottom: 20px;">
+      <li class="task-item done">
+        <div class="task-status done">✓</div>
+        <div class="task-info">
+          <div class="task-title">프로젝트 스캐폴딩</div>
+          <div class="task-desc">Astro 6.3.7 + TailwindCSS v4 + @tailwindcss/vite + React 19 + TypeScript. npm run dev 정상 동작.</div>
+        </div>
+        <span class="task-id">TASK-01</span>
+      </li>
+      <li class="task-item done">
+        <div class="task-status done">✓</div>
+        <div class="task-info">
+          <div class="task-title">디자인 토큰 이식</div>
+          <div class="task-desc">wds-tokens.css → src/styles/tokens.css, app.css → src/styles/app.css. --c-blue-50, --color-bg-normal 등 전체 토큰 이식 완료.</div>
+        </div>
+        <span class="task-id">TASK-02</span>
+      </li>
+      <li class="task-item done">
+        <div class="task-status done">✓</div>
+        <div class="task-info">
+          <div class="task-title">BaseLayout 구현</div>
+          <div class="task-desc">테마 FOUC 방지 인라인 스크립트, Pretendard CDN + JetBrains Mono Google Fonts, app-shell 컨테이너, skip-link (#main-content).</div>
+        </div>
+        <span class="task-id">TASK-03</span>
+      </li>
+      <li class="task-item done">
+        <div class="task-status done">✓</div>
+        <div class="task-info">
+          <div class="task-title">Atom 컴포넌트</div>
+          <div class="task-desc">CategoryBadge, Tag, Button (primary/white/ghost), categories.ts (CATEGORIES 상수 + CategoryId 타입).</div>
+        </div>
+        <span class="task-id">TASK-04</span>
+      </li>
+      <li class="task-item done">
+        <div class="task-status done">✓</div>
+        <div class="task-info">
+          <div class="task-title">Header 컴포넌트</div>
+          <div class="task-desc">sticky frosted glass, 스크롤 8px hairline, ThemeToggle Island, WidthPicker Island, MobileMenu (≤720px 햄버거), aria-current="page", Escape 키 핸들러, focus trap.</div>
+        </div>
+        <span class="task-id">TASK-05</span>
+      </li>
+      <li class="task-item done">
+        <div class="task-status done">✓</div>
+        <div class="task-info">
+          <div class="task-title">Footer 컴포넌트</div>
+          <div class="task-desc">3-col 그리드 (1.4fr/1fr/1fr), 브랜드+태그라인+소셜, EXPLORE/MORE 칼럼, © 2026, 빌드 날짜 자동 주입, v1.0.0 mono pill.</div>
+        </div>
+        <span class="task-id">TASK-06</span>
+      </li>
+      <li class="task-item done">
+        <div class="task-status done">✓</div>
+        <div class="task-info">
+          <div class="task-title">Content Collections + 샘플 포스트</div>
+          <div class="task-desc">src/content.config.ts Zod 스키마, 샘플 포스트 5개 (dev×3, invest×1, daily×1). H2/H3, 코드블록, blockquote, table 포함.</div>
+        </div>
+        <span class="task-id">TASK-07</span>
+      </li>
+      <li class="task-item done">
+        <div class="task-status done">✓</div>
+        <div class="task-info">
+          <div class="task-title">유틸리티 라이브러리</div>
+          <div class="task-desc">readTime.ts (WORDS_PER_MIN=200), utils.ts (formatDate, slugify), search.ts (스코어 기반: title+10, prefix+5, excerpt+4, tags+6, cat+3).</div>
+        </div>
+        <span class="task-id">TASK-08</span>
+      </li>
+      <li class="task-item done">
+        <div class="task-status done">✓</div>
+        <div class="task-info">
+          <div class="task-title">홈 페이지 (/)</div>
+          <div class="task-desc">HeroSection (aurora→tree Island 교체), CategoriesSection (4→2→1col), LatestPosts 3개 (featured span-2), PostCard (badge+title+excerpt+meta+tags).</div>
+        </div>
+        <span class="task-id">TASK-09</span>
+      </li>
+      <li class="task-item done">
+        <div class="task-status done">✓</div>
+        <div class="task-info">
+          <div class="task-title">Blog List 페이지 (/blog)</div>
+          <div class="task-desc">2-col 레이아웃 (sidebar 220px + list), ?cat= / ?tag= URL 필터, replaceState, Sidebar sticky, TagCloud frequency 정렬, ListItem.</div>
+        </div>
+        <span class="task-id">TASK-10</span>
+      </li>
+      <li class="task-item done">
+        <div class="task-status done">✓</div>
+        <div class="task-info">
+          <div class="task-title">Article 페이지 (/blog/[slug])</div>
+          <div class="task-desc">TOC Island (스크롤 스파이 120px offset), ArticleHeader (byline avatar), Prose 스타일 (h2 26px, blockquote blue border, code JetBrains Mono), ArticleFooter (관련 글, Giscus).</div>
+        </div>
+        <span class="task-id">TASK-11</span>
+      </li>
+      <li class="task-item done">
+        <div class="task-status done">✓</div>
+        <div class="task-info">
+          <div class="task-title">About + 404 페이지</div>
+          <div class="task-desc">About: gradient avatar, stat-grid 3→1col @540, CTA. 404: gradient "404" blue→violet, clamp(96px,12vw,180px), CTA 2개.</div>
+        </div>
+        <span class="task-id">TASK-12</span>
+      </li>
+    </ul>
+
+    <div class="phase-header"><span class="phase-badge p1">Phase 1 — 인터랙션 &amp; 검색</span></div>
+    <ul class="task-list" style="margin-bottom: 20px;">
+      <li class="task-item done">
+        <div class="task-status done">✓</div>
+        <div class="task-info">
+          <div class="task-title">Hero tree 변형 + 마우스 패럴렉스 Island</div>
+          <div class="task-desc">HeroParallax.tsx (client:idle) — SVG 지식 그래프, rAF lerp factor 0.10, 7개 CSS var (--mx, --my 등), prefers-reduced-motion 지원, cleanup.</div>
+        </div>
+        <span class="task-id">TASK-13</span>
+      </li>
+      <li class="task-item done">
+        <div class="task-status done">✓</div>
+        <div class="task-info">
+          <div class="task-title">Cmd+K 검색 모달</div>
+          <div class="task-desc">SearchOverlay.tsx — ⌘K/Ctrl+K//, blur(6px) backdrop, 600px modal slide-down 200ms, 최근 검색 localStorage, &lt;mark&gt; 하이라이트, ↑↓Enter Esc 키보드, focus trap, aria-live, role=dialog.</div>
+        </div>
+        <span class="task-id">TASK-14</span>
+      </li>
+      <li class="task-item done">
+        <div class="task-status done">✓</div>
+        <div class="task-info">
+          <div class="task-title">검색 결과 페이지 (/search)</div>
+          <div class="task-desc">?q= 파라미터, 결과 수, 재검색 form, empty dashed card + 인기 태그, ListItem 스타일 + mark 하이라이트.</div>
+        </div>
+        <span class="task-id">TASK-15</span>
+      </li>
+    </ul>
+
+    <div class="phase-header"><span class="phase-badge p2">Phase 2 — 폴리시 &amp; 배포</span></div>
+    <ul class="task-list">
+      <li class="task-item done">
+        <div class="task-status done">✓</div>
+        <div class="task-info">
+          <div class="task-title">SEO + Meta 태그</div>
+          <div class="task-desc">SEOHead.astro — &lt;title&gt;, meta description, og:*, twitter:card, canonical, JSON-LD (WebSite + Article), sitemap.xml (10 URLs), robots.txt, feed.xml (RSS 2.0 5개 포스트).</div>
+        </div>
+        <span class="task-id">TASK-16</span>
+      </li>
+      <li class="task-item done">
+        <div class="task-status done">✓</div>
+        <div class="task-info">
+          <div class="task-title">Giscus 댓글 통합</div>
+          <div class="task-desc">GiscusComments.tsx (client:visible) — 동적 스크립트 주입, data-theme 변경 감지, loading="lazy", .env.example 생성. 실제 동작은 사용자 Giscus 계정 설정 후 확인.</div>
+        </div>
+        <span class="task-id">TASK-17</span>
+      </li>
+      <li class="task-item done">
+        <div class="task-status done">✓</div>
+        <div class="task-info">
+          <div class="task-title">접근성 감사 &amp; 수정</div>
+          <div class="task-desc">WCAG 2.1 AA: skip-link + id="main-content" (6개 파일), focus trap (SearchOverlay), Escape 키 (MobileMenu), aria-current="page", aria-live="polite", role="dialog" aria-modal="true", focus-visible.</div>
+        </div>
+        <span class="task-id">TASK-18</span>
+      </li>
+      <li class="task-item done">
+        <div class="task-status done">✓</div>
+        <div class="task-info">
+          <div class="task-title">성능 최적화</div>
+          <div class="task-desc">Island 로딩 전략 (client:idle/visible/load), vercel.json 정적 자산 1년 캐시, 보안 헤더 (X-Frame-Options DENY, nosniff, XSS-Protection), Astro SSG 기본 최적화.</div>
+        </div>
+        <span class="task-id">TASK-19</span>
+      </li>
+      <li class="task-item skip">
+        <div class="task-status skip">⚠</div>
+        <div class="task-info">
+          <div class="task-title">Vercel 배포 설정 — 코드 완료, 배포는 사용자 액션 필요</div>
+          <div class="task-desc">vercel.json 생성 완료 (보안 헤더 + 캐시 + redirects). GitHub 레포 연결 및 Vercel 프로젝트 생성은 사용자가 직접 수행해야 합니다.</div>
+        </div>
+        <span class="task-id">TASK-20</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- PRD Requirement Check -->
+  <div class="section">
+    <h2><span class="icon">✅</span> PRD 완료 기준 체크리스트</h2>
+    <div class="checklist">
+      <div class="check-item"><span class="check-icon">✅</span><div class="check-text"><strong>Astro 6 + TailwindCSS 4 + TypeScript 스캐폴딩</strong><div class="check-note">Astro 6.3.7, @tailwindcss/vite, React 19, TypeScript</div></div></div>
+      <div class="check-item"><span class="check-icon">✅</span><div class="check-text"><strong>WDS 디자인 토큰 전체 이식</strong><div class="check-note">wds-tokens.css + app.css → src/styles/ — 원자 색상, 시맨틱, 간격, 반경, 그림자, 타이포 토큰</div></div></div>
+      <div class="check-item"><span class="check-icon">✅</span><div class="check-text"><strong>라이트/다크 테마 (FOUC 없음)</strong><div class="check-note">LocalStorage + prefers-color-scheme 폴백, 인라인 스크립트, data-theme on &lt;html&gt;</div></div></div>
+      <div class="check-item"><span class="check-icon">✅</span><div class="check-text"><strong>Container Query 반응형 (.app-shell)</strong><div class="check-note">container-name: app, 모든 브레이크포인트 @container app (max-width: …)</div></div></div>
+      <div class="check-item"><span class="check-icon">✅</span><div class="check-text"><strong>홈 페이지 — Hero + 카테고리 + 최신 글 3개</strong><div class="check-note">tree 변형 Island, aurora 배경, 마우스 패럴렉스 7개 CSS var</div></div></div>
+      <div class="check-item"><span class="check-icon">✅</span><div class="check-text"><strong>Blog List — 카테고리/태그 URL 필터</strong><div class="check-note">?cat=, ?tag= replaceState, sidebar sticky, TagCloud</div></div></div>
+      <div class="check-item"><span class="check-icon">✅</span><div class="check-text"><strong>Article 페이지 — TOC 스파이 + Prose</strong><div class="check-note">220px TOC, scroll-spy 120px offset, is-active indicator, ≤960px TOC 숨김</div></div></div>
+      <div class="check-item"><span class="check-icon">✅</span><div class="check-text"><strong>About + 404 페이지</strong><div class="check-note">gradient avatar, stat-grid, 404 gradient text clamp(96px,12vw,180px)</div></div></div>
+      <div class="check-item"><span class="check-icon">✅</span><div class="check-text"><strong>Header — sticky frosted glass</strong><div class="check-note">68px/60px, 스크롤 hairline, 브랜드 배지, ThemeToggle, WidthPicker, 햄버거 ≤720px</div></div></div>
+      <div class="check-item"><span class="check-icon">✅</span><div class="check-text"><strong>Width Picker (--content-width)</strong><div class="check-note">600/720/860px, localStorage blog-content-width, 외부 클릭/Esc 닫기</div></div></div>
+      <div class="check-item"><span class="check-icon">✅</span><div class="check-text"><strong>⌘K 검색 모달 (전체 상태)</strong><div class="check-note">backdrop blur, slide-down, 최근 검색 localStorage, 스코어 검색, mark, ↑↓ 키보드</div></div></div>
+      <div class="check-item"><span class="check-icon">✅</span><div class="check-text"><strong>검색 결과 페이지 (/search)</strong><div class="check-note">?q= echo, 재검색 form, empty state, ListItem + mark 하이라이트</div></div></div>
+      <div class="check-item"><span class="check-icon">✅</span><div class="check-text"><strong>Giscus 댓글 — 코드 통합 완료</strong><div class="check-note">GiscusComments.tsx, data-theme 연동, .env.example. 실제 댓글 확인은 GitHub 설정 후</div></div></div>
+      <div class="check-item"><span class="check-icon">✅</span><div class="check-text"><strong>RSS 피드 (/feed.xml)</strong><div class="check-note">RSS 2.0, 5개 포스트, lang=ko, 빌드 결과 검증 완료</div></div></div>
+      <div class="check-item"><span class="check-icon">✅</span><div class="check-text"><strong>XML Sitemap (/sitemap.xml)</strong><div class="check-note">/, /blog, /about, blog/[slug] × 5 — 10 URLs 동적 생성</div></div></div>
+      <div class="check-item"><span class="check-icon">✅</span><div class="check-text"><strong>robots.txt</strong><div class="check-note">Allow: /, Disallow: /404, Sitemap 경로 포함</div></div></div>
+      <div class="check-item"><span class="check-icon">✅</span><div class="check-text"><strong>Open Graph + Twitter Card + JSON-LD</strong><div class="check-note">SEOHead.astro — og:title/desc/image, twitter:card, JSON-LD WebSite + Article schema</div></div></div>
+      <div class="check-item"><span class="check-icon">✅</span><div class="check-text"><strong>WCAG 2.1 AA 접근성</strong><div class="check-note">skip-link, focus trap, aria-current, aria-live, role=dialog, Esc 핸들러, focus-visible 2px</div></div></div>
+      <div class="check-item"><span class="check-icon">✅</span><div class="check-text"><strong>vercel.json 배포 설정</strong><div class="check-note">보안 헤더 (X-Frame-Options DENY, nosniff), 정적 자산 1년 캐시, /rss → /feed.xml 리다이렉트</div></div></div>
+      <div class="check-item"><span class="check-icon">⚠️</span><div class="check-text"><strong>Vercel 실제 배포 — 사용자 액션 필요</strong><div class="check-note">GitHub 레포 생성 + Vercel 프로젝트 연결은 외부 서비스이므로 자동 처리 불가</div></div></div>
+      <div class="check-item"><span class="check-icon">⚠️</span><div class="check-text"><strong>Giscus 실제 댓글 동작 — 사용자 액션 필요</strong><div class="check-note">giscus.app에서 레포 설정 후 .env에 GISCUS_REPO, GISCUS_REPO_ID, GISCUS_CATEGORY_ID 입력 필요</div></div></div>
+    </div>
+  </div>
+
+  <!-- Tech Stack -->
+  <div class="section">
+    <h2><span class="icon">🛠</span> 기술 스택</h2>
+    <div class="tech-grid">
+      <span class="tech-pill"><span class="dot" style="background:#FF5D01"></span>Astro 6.3.7</span>
+      <span class="tech-pill"><span class="dot" style="background:#38BDF8"></span>TailwindCSS 4.3.x</span>
+      <span class="tech-pill"><span class="dot" style="background:#61DAFB"></span>React 19</span>
+      <span class="tech-pill"><span class="dot" style="background:#3178C6"></span>TypeScript</span>
+      <span class="tech-pill"><span class="dot" style="background:#F59E0B"></span>@tailwindcss/typography</span>
+      <span class="tech-pill"><span class="dot" style="background:#6541F2"></span>Lucide React</span>
+      <span class="tech-pill"><span class="dot" style="background:#0066FF"></span>Pretendard Variable</span>
+      <span class="tech-pill"><span class="dot" style="background:#14B8A6"></span>JetBrains Mono</span>
+      <span class="tech-pill"><span class="dot" style="background:#000"></span>Giscus</span>
+      <span class="tech-pill"><span class="dot" style="background:#000"></span>Vercel</span>
+    </div>
+  </div>
+
+  <!-- File Structure -->
+  <div class="section">
+    <h2><span class="icon">📁</span> 최종 프로젝트 구조</h2>
+    <div class="file-tree">
+<span class="dir">src/</span>
+├── <span class="dir">components/</span>
+│   ├── <span class="dir">article/</span>     <span class="comment">ArticleHeader, ArticleFooter, TOC.tsx</span>
+│   ├── <span class="dir">blog/</span>        <span class="comment">PostCard, ListItem, Sidebar, TagCloud</span>
+│   ├── <span class="dir">comments/</span>    <span class="comment">GiscusComments.tsx (client:visible)</span>
+│   ├── <span class="dir">hero/</span>        <span class="comment">HeroSection, HeroParallax.tsx (client:idle)</span>
+│   ├── <span class="dir">home/</span>        <span class="comment">CategoriesSection, LatestPosts</span>
+│   ├── <span class="dir">layout/</span>      <span class="comment">Header, Footer, MobileMenu, SEOHead</span>
+│   └── <span class="dir">ui/</span>          <span class="comment">CategoryBadge, Tag, Button, ThemeToggle, WidthPicker, SearchOverlay.tsx</span>
+├── <span class="dir">content/</span>
+│   ├── <span class="file">content.config.ts</span>
+│   └── <span class="dir">blog/</span>        <span class="comment">5개 샘플 포스트 (dev×3, invest×1, daily×1)</span>
+├── <span class="dir">layouts/</span>
+│   ├── <span class="file">BaseLayout.astro</span>    <span class="comment">테마/폰트/app-shell/skip-link</span>
+│   └── <span class="file">ArticleLayout.astro</span> <span class="comment">TOC + main#main-content + Giscus</span>
+├── <span class="dir">lib/</span>
+│   ├── <span class="file">categories.ts</span>   <span class="comment">CATEGORIES 상수, CategoryId 타입</span>
+│   ├── <span class="file">readTime.ts</span>     <span class="comment">calcReadTime (200 WPM)</span>
+│   ├── <span class="file">search.ts</span>       <span class="comment">스코어 기반 searchPosts</span>
+│   └── <span class="file">utils.ts</span>        <span class="comment">formatDate, slugify</span>
+├── <span class="dir">pages/</span>
+│   ├── <span class="file">index.astro</span>     <span class="comment">/ — Hero + 카테고리 + 최신 글</span>
+│   ├── <span class="file">about.astro</span>     <span class="comment">/about</span>
+│   ├── <span class="file">search.astro</span>    <span class="comment">/search?q=</span>
+│   ├── <span class="file">404.astro</span>       <span class="comment">/404</span>
+│   ├── <span class="file">feed.xml.ts</span>     <span class="comment">RSS 2.0</span>
+│   ├── <span class="file">sitemap.xml.ts</span>  <span class="comment">동적 XML sitemap</span>
+│   └── <span class="dir">blog/</span>
+│       ├── <span class="file">index.astro</span>  <span class="comment">/blog — 필터 + 사이드바</span>
+│       └── <span class="file">[slug].astro</span> <span class="comment">/blog/[slug] — Article</span>
+└── <span class="dir">styles/</span>
+    ├── <span class="file">tokens.css</span>      <span class="comment">wds-tokens.css 이식</span>
+    ├── <span class="file">app.css</span>         <span class="comment">design_reference/styles/app.css 이식</span>
+    ├── <span class="file">global.css</span>      <span class="comment">@import tokens + app + tailwind</span>
+    └── <span class="file">prose.css</span>       <span class="comment">@tailwindcss/typography 오버라이드</span>
+    </div>
+  </div>
+
+  <!-- Git History -->
+  <div class="section">
+    <h2><span class="icon">📝</span> Git 커밋 이력</h2>
+    <ul class="task-list">
+      <li class="task-item done">
+        <div class="task-status done">✓</div>
+        <div class="task-info">
+          <div class="task-title">131f63f — feat: complete Phase 2 — accessibility, SEO, performance, and deployment config</div>
+          <div class="task-desc">WCAG 2.1 AA 보완, skip-link id 추가, Giscus 통합, 12개 파일 변경</div>
+        </div>
+      </li>
+      <li class="task-item done">
+        <div class="task-status done">✓</div>
+        <div class="task-info">
+          <div class="task-title">ab98d2d — feat: implement WCAG 2.1 AA accessibility compliance</div>
+          <div class="task-desc">focus trap, aria-current, aria-live, role=dialog, Escape 핸들러</div>
+        </div>
+      </li>
+      <li class="task-item done">
+        <div class="task-status done">✓</div>
+        <div class="task-info">
+          <div class="task-title">ec31f48 — feat: implement Phase 1 - Hero parallax, search modal, and search results page</div>
+          <div class="task-desc">HeroParallax.tsx, SearchOverlay.tsx, /search 페이지</div>
+        </div>
+      </li>
+      <li class="task-item done">
+        <div class="task-status done">✓</div>
+        <div class="task-info">
+          <div class="task-title">0ee4cd0 — feat: Phase 0 MVP 완성 — 모든 페이지 구현 및 정적 빌드</div>
+          <div class="task-desc">전체 페이지, 컴포넌트, 디자인 토큰, 레이아웃 구현</div>
+        </div>
+      </li>
+      <li class="task-item done">
+        <div class="task-status done">✓</div>
+        <div class="task-info">
+          <div class="task-title">80b9ae9 — chore: 프로젝트 초기화 — PRD, ROADMAP, 디자인 레퍼런스</div>
+          <div class="task-desc">PRD.md, ROADMAP.md, shrimp-rules.md, .gitignore</div>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <!-- User Action Required -->
+  <div class="section">
+    <h2><span class="icon">👤</span> 사용자 액션 필요 항목</h2>
+    <div class="banner warn" style="margin-bottom: 12px;">
+      <span class="banner-icon">1️⃣</span>
+      <div>
+        <strong>Giscus 댓글 설정</strong>
+        <div style="margin-top: 6px; font-size: 13px;">
+          1. <a href="https://giscus.app" target="_blank">https://giscus.app</a>에서 GitHub 레포 설정<br>
+          2. <code>GISCUS_REPO</code>, <code>GISCUS_REPO_ID</code>, <code>GISCUS_CATEGORY_ID</code> 값 획득<br>
+          3. 프로젝트 루트에 <code>.env</code> 파일 생성 (<code>.env.example</code> 참조)
+        </div>
+      </div>
+    </div>
+    <div class="banner warn">
+      <span class="banner-icon">2️⃣</span>
+      <div>
+        <strong>Vercel 배포</strong>
+        <div style="margin-top: 6px; font-size: 13px;">
+          1. GitHub에 레포지토리 생성 및 push: <code>git remote add origin &lt;URL&gt; &amp;&amp; git push -u origin main</code><br>
+          2. <a href="https://vercel.com/new" target="_blank">vercel.com/new</a>에서 GitHub 레포 import<br>
+          3. Framework Preset: <strong>Astro</strong> 선택 확인<br>
+          4. 환경 변수 Dashboard에 등록 (<code>PUBLIC_SITE_URL</code>, Giscus 변수)<br>
+          5. Deploy → <code>https://*.vercel.app</code> 접근 확인
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Build Info -->
+  <div class="section">
+    <h2><span class="icon">🔨</span> 빌드 결과 (로컬 검증 완료)</h2>
+    <div class="checklist">
+      <div class="check-item"><span class="check-icon">✅</span><div class="check-text"><strong>npm run build — 0 errors, 10 pages</strong></div></div>
+      <div class="check-item"><span class="check-icon">✅</span><div class="check-text"><strong>dist/index.html</strong> — OG tags, JSON-LD WebSite, skip-link, canonical</div></div>
+      <div class="check-item"><span class="check-icon">✅</span><div class="check-text"><strong>dist/blog/[slug]/index.html</strong> — og:type=article, Article JSON-LD, per-post meta</div></div>
+      <div class="check-item"><span class="check-icon">✅</span><div class="check-text"><strong>dist/sitemap.xml</strong> — 10 URLs (/, /blog, /about, /blog/[slug] × 5)</div></div>
+      <div class="check-item"><span class="check-icon">✅</span><div class="check-text"><strong>dist/robots.txt</strong> — Allow: /, Disallow: /404, Sitemap 참조</div></div>
+      <div class="check-item"><span class="check-icon">✅</span><div class="check-text"><strong>dist/feed.xml</strong> — RSS 2.0, 5개 포스트, lang=ko</div></div>
+    </div>
+  </div>
+
+  <div class="report-footer">
+    <p>홍마초의 잡생각 · 자동 생성 보고서 · 2026-05-22</p>
+    <p style="margin-top: 4px;">Powered by Astro 6 + TailwindCSS v4 · shrimp-task-manager MCP 워크플로우</p>
+  </div>
+
+</div>
+</body>
+</html>
