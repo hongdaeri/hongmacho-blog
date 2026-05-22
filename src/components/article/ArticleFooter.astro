@@ -51,19 +51,11 @@ const { tags, title } = post.data;
   )}
 
   <div class="article__comments-block">
-    <h2 class="related__title">댓글</h2>
     <GiscusComments client:visible articleId={post.id} articleTitle={title} />
   </div>
 </footer>
 
 <style>
-  .article__comments-block {
-    margin-top: 8px;
-  }
-  .article__comments-block .related__title {
-    margin-bottom: 12px;
-  }
-  /* Let Giscus breathe; remove any extra chrome from the iframe wrapper */
   .article__comments-block :global(#giscus-container) {
     min-height: 200px;
   }
