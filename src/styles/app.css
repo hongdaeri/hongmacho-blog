@@ -1892,6 +1892,7 @@ body[data-viewport-preview]:not([data-viewport-preview=""])::before {
   border-top: 0;
   transition: padding-left var(--motion-standard) var(--ease-standard);
 }
+.list-item[hidden] { display: none; }
 .list-item:first-child { padding-top: 8px; }
 .list-item__link {
   display: contents;
