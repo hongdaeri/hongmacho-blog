@@ -1,6 +1,6 @@
 ---
 title: "개발자로 살면서 번아웃을 마주했을 때"
-date: "2026-05-25"
+date: "2026-05-02"
 category: "daily"
 excerpt: "열심히 달리다 어느 날 멈춰버렸다. 번아웃을 인정하고 회복하기까지의 솔직한 기록."
 featured: false

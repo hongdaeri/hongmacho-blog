@@ -1,6 +1,6 @@
 ---
 title: "Java Stream API 제대로 쓰기"
-date: "2026-05-24"
+date: "2026-05-04"
 category: "dev"
 excerpt: "Java 8 이후 Stream API가 나왔지만, 잘못 쓰면 오히려 가독성과 성능이 나빠진다. 올바른 사용법과 흔한 실수를 정리했다."
 featured: false

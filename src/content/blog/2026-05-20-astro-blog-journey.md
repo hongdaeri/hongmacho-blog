@@ -1,6 +1,6 @@
 ---
 title: "Astro로 블로그를 만들며 배운 것들"
-date: "2026-05-21"
+date: "2026-05-20"
 category: "dev"
 excerpt: "정적 사이트 생성기 Astro 6를 선택하고, 직접 블로그를 구축하며 겪은 고민과 배움을 공유합니다."
 featured: true

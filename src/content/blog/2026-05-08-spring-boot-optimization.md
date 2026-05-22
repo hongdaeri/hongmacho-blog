@@ -1,6 +1,6 @@
 ---
 title: "Spring Boot API 성능 최적화: 실전에서 배운 교훈"
-date: "2026-05-23"
+date: "2026-05-08"
 category: "dev"
 excerpt: "프로덕션 환경에서 API 응답 시간이 치솟았다. N+1 쿼리 문제부터 캐싱 전략까지, 실제로 효과가 있었던 방법들을 공유한다."
 featured: false
