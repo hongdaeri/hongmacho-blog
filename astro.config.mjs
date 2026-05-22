@@ -11,6 +11,9 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
     envPrefix: 'PUBLIC_',
+    optimizeDeps: {
+      include: ['react-dom/client'],
+    },
     define: {
       'import.meta.env.PUBLIC_GISCUS_REPO': JSON.stringify(env.PUBLIC_GISCUS_REPO ?? ''),
       'import.meta.env.PUBLIC_GISCUS_REPO_ID': JSON.stringify(env.PUBLIC_GISCUS_REPO_ID ?? ''),

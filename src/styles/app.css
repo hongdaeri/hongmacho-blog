@@ -1884,7 +1884,6 @@ body[data-viewport-preview]:not([data-viewport-preview=""])::before {
   gap: 12px;
   padding: 28px 0;
   border-bottom: 1px solid var(--color-line-alternative);
-  cursor: pointer;
   text-align: left;
   width: 100%;
   background: none;
@@ -1894,7 +1893,13 @@ body[data-viewport-preview]:not([data-viewport-preview=""])::before {
   transition: padding-left var(--motion-standard) var(--ease-standard);
 }
 .list-item:first-child { padding-top: 8px; }
-.list-item:hover .list-item__title { color: var(--color-primary-normal); }
+.list-item__link {
+  display: contents;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+.list-item__link:hover .list-item__title { color: var(--color-primary-normal); }
 
 .list-item__meta {
   display: flex;

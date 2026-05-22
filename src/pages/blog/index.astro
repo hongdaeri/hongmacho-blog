@@ -7,20 +7,9 @@ import ListItem from '../../components/blog/ListItem.astro';
 import TagCloud from '../../components/blog/TagCloud.astro';
 import { getCollection } from 'astro:content';
 import { CATEGORY_LIST } from '../../lib/categories';
-import type { CategoryId } from '../../lib/categories';
 
 const allPosts = await getCollection('blog');
 const sortedPosts = allPosts.sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime());
-
-const url = Astro.url;
-const selectedCat = url.searchParams.get('cat') as CategoryId | null;
-const selectedTag = url.searchParams.get('tag');
-
-const filteredPosts = sortedPosts.filter((post) => {
-  if (selectedCat && post.data.category !== selectedCat) return false;
-  if (selectedTag && !post.data.tags.includes(selectedTag)) return false;
-  return true;
-});
 
 const allTags = [...new Set(allPosts.flatMap((p) => p.data.tags))];
 const tagCounts = allTags.map((tag) => ({
@@ -33,43 +22,117 @@ const categoryCounts = CATEGORY_LIST.map((cat) => ({
   count: allPosts.filter((p) => p.data.category === cat.id).length,
 }));
 
-const headTitle = selectedTag
-  ? `#${selectedTag}`
-  : selectedCat
-  ? `${CATEGORY_LIST.find((c) => c.id === selectedCat)?.name ?? ''} 글`
-  : '전체 글';
-
-const headSub = selectedTag
-  ? `'${selectedTag}' 태그가 달린 글 ${filteredPosts.length}개`
-  : `총 ${filteredPosts.length}개의 글`;
+const categoryNameMap = Object.fromEntries(CATEGORY_LIST.map((c) => [c.id, c.name]));
 ---
 
-<BaseLayout title={`${headTitle} | 홍마초의 잡생각`}>
+<BaseLayout title="전체 글 | 홍마초의 잡생각">
   <Header />
   <main id="main-content">
     <div class="page-head">
       <div class="container">
-        <h1 class="page-head__title">{headTitle}</h1>
-        <p class="page-head__sub">{headSub}</p>
+        <h1 class="page-head__title">전체 글</h1>
+        <p class="page-head__sub">총 {sortedPosts.length}개의 글</p>
       </div>
     </div>
 
     <div class="container blog-layout">
       <aside class="sidebar" aria-label="필터">
-        <Sidebar categories={categoryCounts} selectedCat={selectedCat} />
-        <TagCloud tags={tagCounts} selectedTag={selectedTag} />
+        <Sidebar categories={categoryCounts} selectedCat={null} />
+        <TagCloud tags={tagCounts} selectedTag={null} />
       </aside>
 
-      <div class="blog-list">
-        {filteredPosts.length === 0 ? (
-          <div style="padding:64px 0;text-align:center;color:var(--color-label-alternative)">
-            해당 조건의 글이 아직 없습니다.
-          </div>
-        ) : (
-          filteredPosts.map((post) => <ListItem post={post} />)
-        )}
+      <div class="blog-list" id="blog-list">
+        {sortedPosts.map((post) => <ListItem post={post} />)}
+        <div class="blog-empty" id="blog-empty" hidden>
+          해당 조건의 글이 아직 없습니다.
+        </div>
       </div>
     </div>
   </main>
   <Footer />
 </BaseLayout>
+
+<script is:inline define:vars={{ categoryNameMap, totalPosts: sortedPosts.length }}>
+  (function () {
+    function applyFilter() {
+      const params = new URLSearchParams(window.location.search);
+      const cat = params.get('cat');
+      const tag = params.get('tag');
+
+      const items = document.querySelectorAll('#blog-list .list-item');
+      let visible = 0;
+      items.forEach((el) => {
+        const itemCat = el.getAttribute('data-category');
+        const itemTags = (el.getAttribute('data-tags') || '').split('|');
+        const matchCat = !cat || itemCat === cat;
+        const matchTag = !tag || itemTags.includes(tag);
+        const show = matchCat && matchTag;
+        el.hidden = !show;
+        if (show) visible += 1;
+      });
+
+      // Head title / subtitle
+      const title = document.querySelector('.page-head__title');
+      const sub = document.querySelector('.page-head__sub');
+      if (tag) {
+        if (title) title.textContent = '#' + tag;
+        if (sub) sub.textContent = "'" + tag + "' 태그가 달린 글 " + visible + '개';
+        document.title = '#' + tag + ' | 홍마초의 잡생각';
+      } else if (cat) {
+        const name = categoryNameMap[cat] || '';
+        if (title) title.textContent = name + ' 글';
+        if (sub) sub.textContent = '총 ' + visible + '개의 글';
+        document.title = name + ' 글 | 홍마초의 잡생각';
+      } else {
+        if (title) title.textContent = '전체 글';
+        if (sub) sub.textContent = '총 ' + totalPosts + '개의 글';
+        document.title = '전체 글 | 홍마초의 잡생각';
+      }
+
+      // Sidebar active state
+      document.querySelectorAll('.sidebar__item').forEach((el) => {
+        el.classList.remove('is-active');
+      });
+      const sidebarLinks = document.querySelectorAll('.sidebar__item');
+      sidebarLinks.forEach((link) => {
+        const href = link.getAttribute('href') || '';
+        if (!cat && !tag && href === '/blog') {
+          link.classList.add('is-active');
+        } else if (cat && href === '/blog?cat=' + cat) {
+          link.classList.add('is-active');
+        }
+      });
+
+      // Tag cloud active state — match exact href
+      const tagLinks = document.querySelectorAll('.sidebar__tag-cloud .tag');
+      const activeTagHref = tag ? '/blog?tag=' + encodeURIComponent(tag) : null;
+      tagLinks.forEach((el) => {
+        const href = el.getAttribute('href');
+        if (activeTagHref && href === activeTagHref) {
+          el.setAttribute('data-active', 'true');
+          el.style.background = 'var(--color-primary-normal)';
+          el.style.color = 'var(--color-primary-on)';
+        } else {
+          el.removeAttribute('data-active');
+          el.style.background = '';
+          el.style.color = '';
+        }
+      });
+
+      // Empty state
+      const empty = document.getElementById('blog-empty');
+      if (empty) empty.hidden = visible !== 0;
+    }
+
+    applyFilter();
+    window.addEventListener('popstate', applyFilter);
+  })();
+</script>
+
+<style>
+  .blog-empty {
+    padding: 64px 0;
+    text-align: center;
+    color: var(--color-label-alternative);
+  }
+</style>

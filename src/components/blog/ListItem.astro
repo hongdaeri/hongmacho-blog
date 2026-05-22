@@ -12,34 +12,35 @@ const { title, excerpt, category, tags, date, readTime } = post.data;
 const slug = post.id;
 ---
 
-<a href={`/blog/${slug}`} class="list-item">
-  <div class="list-item__meta">
-    <CategoryBadge category={category} />
-    <time datetime={date} class="list-item__date">{formatDate(date)}</time>
-    {readTime && (
-      <>
-        <span class="dot" style="color: var(--color-line-strong)">·</span>
-        <span class="list-item__date" style="display:inline-flex;align-items:center;gap:4px">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <circle cx="12" cy="12" r="10" />
-            <path d="M12 6v6l4 2" />
-          </svg>
-          {readTime}분
-        </span>
-      </>
-    )}
-  </div>
-  <h3 class="list-item__title">{title}</h3>
-  <p class="list-item__excerpt">{excerpt}</p>
+<article class="list-item" data-category={category} data-tags={tags.join('|')}>
+  <a href={`/blog/${slug}`} class="list-item__link">
+    <div class="list-item__meta">
+      <CategoryBadge category={category} />
+      <time datetime={date} class="list-item__date">{formatDate(date)}</time>
+      {readTime && (
+        <>
+          <span class="dot" style="color: var(--color-line-strong)">·</span>
+          <span class="list-item__date" style="display:inline-flex;align-items:center;gap:4px">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="10" />
+              <path d="M12 6v6l4 2" />
+            </svg>
+            {readTime}분
+          </span>
+        </>
+      )}
+    </div>
+    <h3 class="list-item__title">{title}</h3>
+    <p class="list-item__excerpt">{excerpt}</p>
+  </a>
   {tags.length > 0 && (
     <div class="list-item__tags">
       {tags.map((tag) => (
         <a
           href={`/blog?tag=${encodeURIComponent(tag)}`}
           class="tag"
-          onclick="event.stopPropagation()"
         >#{tag}</a>
       ))}
     </div>
   )}
-</a>
+</article>
