@@ -69,7 +69,7 @@
       { "key": "books", "label": "올해 읽은 책", "value": "42" }
     ],
     "topics": [
-      { "name": "개발", "desc": "Spring Boot, Next.js와 TypeScript, 그리고 옆에 둔 AI" },
+      { "name": "개발", "desc": "Spring Boot, Next.js와 TypeScript, AI 에이전트와 MCP" },
       { "name": "투자", "desc": "퀀트 백테스트, 팩터 투자, 흔들리지 않는 포트폴리오" },
       { "name": "학습", "desc": "책·강의 메모, 나만의 학습법, 오래 가는 노트" },
       { "name": "일상", "desc": "분기 회고, 좋아한 것들, 작게 시작한 실험들" }
