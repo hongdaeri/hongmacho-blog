@@ -2026,7 +2026,6 @@ body[data-viewport-preview]:not([data-viewport-preview=""])::before {
   line-height: 1.2;
   letter-spacing: -0.028em;
   margin: 0 0 16px;
-  text-wrap: balance;
 }
 .article__excerpt {
   font-size: 17px;
