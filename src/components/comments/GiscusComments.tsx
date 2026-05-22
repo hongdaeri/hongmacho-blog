@@ -56,15 +56,16 @@ export default function GiscusComments({
       'data-repo-id',
       import.meta.env.PUBLIC_GISCUS_REPO_ID || ''
     );
-    script.setAttribute('data-category', 'Blog Comments');
+    script.setAttribute('data-category', 'Announcements');
     script.setAttribute(
       'data-category-id',
       import.meta.env.PUBLIC_GISCUS_CATEGORY_ID || ''
     );
-    script.setAttribute('data-mapping', 'og:title');
+    script.setAttribute('data-mapping', 'pathname');
+    script.setAttribute('data-strict', '0');
     script.setAttribute('data-theme', theme);
     script.setAttribute('data-reactions-enabled', '1');
-    script.setAttribute('data-emit-metadata', '1');
+    script.setAttribute('data-emit-metadata', '0');
     script.setAttribute('data-input-position', 'bottom');
     script.setAttribute('data-lang', 'ko');
 
