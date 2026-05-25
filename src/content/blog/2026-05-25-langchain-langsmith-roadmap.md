@@ -24,7 +24,6 @@ RAG(Retrieval-Augmented Generation) 파이프라인을 예로 들면, 직접 구
 LangChain을 처음 배울 때 가장 흔한 실수는 "일단 예제부터 복붙"이다. 예제는 돌아가는데 왜 돌아가는지 모른다. 변형하려고 하면 막힌다. 개념 5가지를 먼저 이해하면 이 단계를 건너뛸 수 있다.
 
 **1. Chain**
-
 여러 처리 단계를 순서대로 연결한 파이프라인이다. 프롬프트 템플릿 → LLM 호출 → 결과 파서 같은 흐름이 Chain이다. 2023년 하반기부터 LangChain은 LCEL(LangChain Expression Language)을 도입해 파이프 연산자(`|`)로 Chain을 표현한다.
 
 ```python
@@ -43,19 +42,15 @@ result = chain.invoke({"topic": "LangChain"})
 이게 LCEL의 핵심이다. 각 컴포넌트가 `|`로 연결되고, `invoke()`로 실행된다. 단계 추가, 교체, 테스트가 모두 선언적으로 된다.
 
 **2. Agent**
-
 LLM이 스스로 어떤 Tool을 사용할지 결정하는 자율 실행 구조다. 단순 Chain은 실행 순서가 고정되어 있지만, Agent는 LLM의 판단에 따라 다음 행동이 달라진다. 웹 검색이 필요하면 검색 Tool을 호출하고, 계산이 필요하면 계산기 Tool을 호출한다. 복잡한 Agent 워크플로우는 LangGraph로 구현한다.
 
 **3. Memory**
-
 대화 히스토리를 어떻게 유지할지 결정하는 컴포넌트다. `ConversationBufferMemory`는 전체 대화를 그대로 저장하고, `ConversationSummaryMemory`는 LLM으로 요약해서 저장한다. 토큰 비용을 줄이려면 Summary 방식이 낫지만, 정보 손실이 생긴다.
 
 **4. Tool**
-
 외부 시스템과 연동하는 래퍼다. 웹 검색(Tavily, DuckDuckGo), 데이터베이스 조회, 코드 실행, 파일 읽기 등이 모두 Tool로 구현된다. 커스텀 Tool은 함수 하나에 `@tool` 데코레이터를 붙이면 된다.
 
 **5. Retriever**
-
 벡터 데이터베이스에서 질의와 유사한 문서를 가져오는 인터페이스다. RAG의 핵심 컴포넌트다. FAISS, Chroma, Pinecone, Weaviate 등 다양한 벡터 DB가 Retriever 인터페이스로 지원된다.
 
 이 5가지가 머릿속에 들어오면 LangChain 공식 문서를 읽을 때 "이게 Chain인가, Agent인가, Tool인가"가 바로 보인다. 낯선 개념이 나와도 5가지 중 어디에 해당하는지 분류하면서 읽을 수 있다.
@@ -82,7 +77,6 @@ export LANGCHAIN_API_KEY=ls__xxxxxxxxxxxxxxxxxxxxxxxx
 LangSmith는 크게 세 가지 기능을 제공한다.
 
 **추적(Tracing)**
-
 실행 흐름 전체를 계층적 트리로 시각화한다. Root Trace에 전체 Chain이 보이고, 그 아래에 각 단계(Retriever, LLM Call, Output Parser)가 자식 노드로 펼쳐진다. 각 노드에서는 다음 정보를 확인할 수 있다.
 
 | 정보 | 설명 |
@@ -96,7 +90,6 @@ LangSmith는 크게 세 가지 기능을 제공한다.
 여러 번 실행한 결과를 비교하거나, 오류가 난 실행을 필터링해서 확인하는 것도 가능하다. 특히 프롬프트를 수정한 전후 결과를 나란히 비교하는 기능이 유용하다.
 
 **평가(Evaluation)**
-
 LLM 앱의 품질을 자동으로 측정하는 기능이다. 테스트 데이터셋(질문-정답 쌍)을 만들고, 실행 결과가 기준에 맞는지 LLM이 직접 평가하거나, 커스텀 평가 함수를 작성할 수 있다. 프롬프트를 변경했을 때 품질이 올라갔는지 내려갔는지를 수치로 비교할 수 있어서, 프롬프트 엔지니어링을 감으로 하는 게 아니라 데이터로 접근할 수 있다.
 
 ```python
@@ -110,11 +103,9 @@ results = evaluate(
 ```
 
 **모니터링(Monitoring)**
-
 프로덕션 환경에서 LLM 앱의 상태를 추적한다. 성공/실패율, 평균 레이턴시, 총 토큰 비용, 피드백 점수 등을 대시보드로 본다. 이상 징후가 생기면 알림을 받을 수 있다. 특히 비용 추적 기능은 GPT-4o처럼 비싼 모델을 쓸 때 반드시 켜둬야 한다. 예상보다 훨씬 빠르게 청구서가 불어날 수 있다.
 
 **Prompt Hub**
-
 팀이 사용하는 프롬프트를 중앙에서 버전 관리한다. 코드에는 프롬프트 ID만 남기고, 실제 내용은 LangSmith에서 관리한다. 프롬프트를 바꿨을 때 히스토리가 남고, 롤백도 가능하다. 여러 사람이 같은 앱을 개발할 때 프롬프트 충돌을 방지할 수 있다.
 
 ## 단계별 학습 로드맵
@@ -131,35 +122,23 @@ results = evaluate(
 | 5단계 | 지속 | 프로덕션 배포, 비용 최적화 | LangServe, FastAPI |
 
 **0단계: Python 기초**
-
-Java나 Kotlin을 주로 쓰던 백엔드 개발자라면 Python 문법을 일주일 정도 훑으면 충분하다. 타입 힌트, 데코레이터, 비동기(`async/await`), 패키지 관리(`pip`, `uv`)만 익히면 된다. LangChain 문서와 예제가 Python 중심이라 Python으로 시작하는 게 맞다. TypeScript 버전도 있지만 문서 품질과 예제 수에서 Python이 앞선다.
-
-함수형 스타일, 딕셔너리/리스트 컴프리헨션, 제너레이터 같은 Python 관용 표현은 LangChain 코드에서 자주 나온다. Java와 다른 부분이 많아서 처음엔 낯설지만 일주일이면 감이 잡힌다.
+Java나 Kotlin을 주로 쓰던 백엔드 개발자라면 Python 문법을 일주일 정도 훑으면 충분하다. 타입 힌트, 데코레이터, 비동기(`async/await`), 패키지 관리(`pip`, `uv`)만 익히면 된다. LangChain 문서와 예제가 Python 중심이라 Python으로 시작하는 게 맞다. TypeScript 버전도 있지만 문서 품질과 예제 수에서 Python이 앞선다. 함수형 스타일, 딕셔너리/리스트 컴프리헨션, 제너레이터 같은 Python 관용 표현은 LangChain 코드에서 자주 나온다. Java와 다른 부분이 많아서 처음엔 낯설지만 일주일이면 감이 잡힌다.
 
 **1단계: LangChain 기초**
-
 `LLMChain`(구 방식)이 아닌 LCEL 문법으로 배워야 한다. 공식 문서에서 "Expression Language" 챕터부터 시작한다. ChatModel, PromptTemplate, OutputParser 세 가지를 LCEL로 연결하는 것이 첫 번째 목표다. 여기서 `invoke()`, `stream()`, `batch()` 차이도 같이 익힌다. 스트리밍 응답을 구현할 때 `stream()`을 모르면 막힌다.
 
 2주 동안 만들어 볼 프로젝트로는 간단한 Q&A 챗봇이 적당하다. 사용자 입력을 받아서 LLM에게 묻고 답변을 반환하는 것까지만 해도 LCEL 파이프라인 개념이 잡힌다.
 
 **2단계: RAG 파이프라인**
-
-문서를 청크로 분할 → 임베딩 생성 → 벡터 DB 저장 → 유사도 검색 → LLM에 컨텍스트 전달. 이 흐름을 처음부터 직접 구현한다. LangChain의 `RecursiveCharacterTextSplitter`, `OpenAIEmbeddings`, `FAISS.from_documents()` 순서로 따라가면 된다.
-
-벡터 DB는 로컬에서 쓸 수 있는 FAISS나 Chroma로 시작한다. Pinecone 같은 클라우드 벡터 DB는 나중에 연결하면 된다. 청크 크기(`chunk_size`)와 오버랩(`chunk_overlap`) 설정이 검색 품질에 얼마나 영향을 미치는지 다양하게 실험해 본다. 이 실험이 RAG 이해도를 높이는 데 가장 효과적이다.
+문서를 청크로 분할 → 임베딩 생성 → 벡터 DB 저장 → 유사도 검색 → LLM에 컨텍스트 전달. 이 흐름을 처음부터 직접 구현한다. LangChain의 `RecursiveCharacterTextSplitter`, `OpenAIEmbeddings`, `FAISS.from_documents()` 순서로 따라가면 된다. 벡터 DB는 로컬에서 쓸 수 있는 FAISS나 Chroma로 시작한다. Pinecone 같은 클라우드 벡터 DB는 나중에 연결하면 된다. 청크 크기(`chunk_size`)와 오버랩(`chunk_overlap`) 설정이 검색 품질에 얼마나 영향을 미치는지 다양하게 실험해 본다. 이 실험이 RAG 이해도를 높이는 데 가장 효과적이다.
 
 **3단계: Agent와 LangGraph**
-
-기본 ReAct Agent를 만들고, 커스텀 Tool을 붙여본다. Python 함수에 `@tool` 데코레이터를 붙이면 Agent가 사용할 수 있는 Tool이 된다. LLM은 질문을 받으면 어떤 Tool을 어떤 순서로 호출할지 스스로 결정한다.
-
-그 다음 LangGraph로 넘어간다. LangGraph는 Agent 실행 흐름을 그래프(노드+엣지)로 정의한다. 복잡한 멀티스텝 워크플로우나 멀티에이전트 시스템을 구현할 때 필수다. LangChain과는 별개로 학습해야 하는 패러다임이라 처음에 거부감이 있지만, 익숙해지면 Agent 흐름을 직관적으로 설계할 수 있다.
+기본 ReAct Agent를 만들고, 커스텀 Tool을 붙여본다. Python 함수에 `@tool` 데코레이터를 붙이면 Agent가 사용할 수 있는 Tool이 된다. LLM은 질문을 받으면 어떤 Tool을 어떤 순서로 호출할지 스스로 결정한다. 그 다음 LangGraph로 넘어간다. LangGraph는 Agent 실행 흐름을 그래프(노드+엣지)로 정의한다. 복잡한 멀티스텝 워크플로우나 멀티에이전트 시스템을 구현할 때 필수다. LangChain과는 별개로 학습해야 하는 패러다임이라 처음에 거부감이 있지만, 익숙해지면 Agent 흐름을 직관적으로 설계할 수 있다.
 
 **4단계: LangSmith**
-
 3단계까지 오면 이미 여러 번 디버깅으로 고생했을 것이다. LangSmith를 붙이면 그 고생이 줄어드는 걸 바로 체감한다. Tracing 연동 → 실행 결과 분석 → Evaluation 데이터셋 구성 순서로 익힌다. 평가 데이터셋은 최소 20~30개 질문-정답 쌍을 만들어야 의미 있는 결과가 나온다.
 
 **5단계: 배포와 비용 최적화**
-
 LangServe로 Chain을 REST API로 노출하거나 FastAPI와 직접 통합한다. Spring Boot에서 해당 API를 호출하는 구조가 백엔드 개발자에겐 자연스럽다. 프로덕션에서 중요한 건 토큰 비용 관리다. 불필요한 LLM 호출 줄이기, 저렴한 모델로 사전 필터링, 캐싱(시맨틱 캐싱 포함) 전략이 여기에 해당한다.
 
 ## 아직 풀리지 않은 것들
